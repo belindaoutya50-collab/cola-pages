@@ -3,840 +3,1561 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>显化清单</title>
+<title>显化清单 & 丰盈体检</title>
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  
-  :root {
-    --bg: #faf8f5;
-    --card: #ffffff;
-    --text: #2c2c2c;
-    --text-secondary: #6b6b6b;
-    --text-muted: #9a9a9a;
-    --accent: #b8956a;
-    --accent-light: #e8d5b5;
-    --border: #e8e4dd;
-    --success: #7a9e7e;
-    --radius: 12px;
-    --shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03);
-  }
+/* ── Reset ───────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    line-height: 1.7;
-    min-height: 100dvh;
-    -webkit-font-smoothing: antialiased;
-  }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  background: #faf8f5;
+  color: #2c2c2c;
+  line-height: 1.7;
+  min-height: 100dvh;
+  -webkit-font-smoothing: antialiased;
+}
 
-  .container {
-    max-width: 480px;
-    margin: 0 auto;
-    padding: 24px 16px 40px;
-  }
+.container {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 24px 16px 40px;
+}
 
-  /* Header */
-  .header {
-    text-align: center;
-    padding: 32px 0 20px;
-  }
-  .header h1 {
-    font-size: 20px;
-    font-weight: 500;
-    color: var(--accent);
-    letter-spacing: 0.5px;
-  }
-  .header .subtitle {
-    font-size: 13px;
-    color: var(--text-muted);
-    margin-top: 6px;
-  }
+.hidden { display: none !important; }
 
-  /* Day Badge */
-  .day-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    background: var(--accent-light);
-    color: var(--accent);
-    padding: 6px 14px;
-    border-radius: 20px;
-    font-size: 13px;
-    font-weight: 500;
-    margin-bottom: 20px;
-  }
-  .day-badge .dot {
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: var(--accent);
-  }
+/* ── Landing Page ────────────────────────────────────── */
+.landing-wrap {
+  text-align: center;
+  padding: 48px 16px 40px;
+}
+.landing-wrap .landing-icon {
+  font-size: 40px;
+  margin-bottom: 16px;
+}
+.landing-wrap h1 {
+  font-size: 22px;
+  font-weight: 600;
+  color: #5c5c5c;
+  margin-bottom: 8px;
+  letter-spacing: 0.5px;
+}
+.landing-wrap .landing-sub {
+  font-size: 14px;
+  color: #999;
+  margin-bottom: 36px;
+}
 
-  /* Progress dots */
-  .progress-dots {
-    display: flex;
-    gap: 8px;
-    justify-content: center;
-    margin-bottom: 28px;
-  }
-  .progress-dot {
-    width: 10px; height: 10px;
-    border-radius: 50%;
-    background: var(--border);
-    transition: all 0.3s;
-    position: relative;
-  }
-  .progress-dot.filled {
-    background: var(--accent);
-  }
-  .progress-dot.today {
-    background: var(--accent);
-    box-shadow: 0 0 0 3px var(--accent-light);
-  }
+.landing-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.landing-card {
+  background: #fff;
+  border-radius: 14px;
+  padding: 28px 24px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03);
+  border: 1px solid #e8e4dd;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  text-align: left;
+}
+.landing-card:active {
+  transform: scale(0.985);
+}
+.landing-card .lc-icon {
+  font-size: 36px;
+  margin-bottom: 12px;
+}
+.landing-card .lc-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.landing-card .lc-desc {
+  font-size: 13px;
+  color: #999;
+  line-height: 1.6;
+}
+.landing-card .lc-accent {
+  display: inline-block;
+  margin-top: 16px;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 8px 18px;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+.landing-card.manifest-card .lc-title { color: #b8956a; }
+.landing-card.manifest-card .lc-accent { background: #e8d5b5; color: #b8956a; }
+.landing-card.abundance-card .lc-title { color: #5b7b5e; }
+.landing-card.abundance-card .lc-accent { background: #d4e5d6; color: #5b7b5e; }
 
-  /* Cards */
-  .card {
-    background: var(--card);
-    border-radius: var(--radius);
-    padding: 24px 20px;
-    margin-bottom: 16px;
-    box-shadow: var(--shadow);
-    border: 1px solid var(--border);
-    transition: transform 0.2s;
+@media (min-width: 520px) {
+  .landing-cards {
+    flex-direction: row;
   }
-
-  /* Question */
-  .question-label {
-    font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    color: var(--accent);
-    margin-bottom: 12px;
-    font-weight: 500;
-  }
-  .question-text {
-    font-size: 17px;
-    line-height: 1.6;
-    color: var(--text);
-    font-weight: 400;
-  }
-  .question-hint {
-    font-size: 13px;
-    color: var(--text-muted);
-    margin-top: 12px;
-    font-style: italic;
-  }
-
-  /* Textarea */
-  .answer-area {
-    margin-top: 12px;
-  }
-  .answer-area textarea {
-    width: 100%;
-    min-height: 100px;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 14px;
-    font-size: 15px;
-    font-family: inherit;
-    line-height: 1.6;
-    color: var(--text);
-    background: var(--bg);
-    resize: vertical;
-    transition: border-color 0.2s;
-  }
-  .answer-area textarea:focus {
-    outline: none;
-    border-color: var(--accent);
-    background: var(--card);
-  }
-  .answer-area textarea::placeholder {
-    color: var(--text-muted);
-  }
-
-  /* Buttons */
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    padding: 12px 24px;
-    border-radius: 8px;
-    font-size: 15px;
-    font-weight: 500;
-    border: none;
-    cursor: pointer;
-    transition: all 0.2s;
-    font-family: inherit;
-    width: 100%;
-  }
-  .btn-primary {
-    background: var(--accent);
-    color: #fff;
-  }
-  .btn-primary:active {
-    background: #a07d55;
-  }
-  .btn-primary:disabled {
-    background: var(--border);
-    color: var(--text-muted);
-    cursor: not-allowed;
-  }
-  .btn-secondary {
-    background: transparent;
-    color: var(--accent);
-    border: 1px solid var(--accent);
-  }
-
-  /* AI mirror */
-  .mirror-card {
-    border-left: 3px solid var(--accent);
-    background: #fdfaf5;
-  }
-  .mirror-label {
-    font-size: 12px;
-    color: var(--accent);
-    font-weight: 500;
-    margin-bottom: 8px;
-  }
-  .mirror-text {
-    font-size: 15px;
-    color: var(--text-secondary);
-    line-height: 1.6;
-  }
-  .typing-indicator {
-    display: inline-flex;
-    gap: 4px;
-    padding: 8px 0;
-  }
-  .typing-dot {
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: var(--accent-light);
-    animation: bounce 1.4s infinite ease-in-out;
-  }
-  .typing-dot:nth-child(2) { animation-delay: 0.2s; }
-  .typing-dot:nth-child(3) { animation-delay: 0.4s; }
-  @keyframes bounce {
-    0%, 80%, 100% { transform: translateY(0); }
-    40% { transform: translateY(-6px); }
-  }
-
-  /* Manifestation List */
-  .manifest-section {
-    margin-top: 12px;
-  }
-  .manifest-group {
-    margin-bottom: 20px;
-  }
-  .manifest-group-title {
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--accent);
-    margin-bottom: 8px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-  .manifest-item {
-    padding: 8px 0 8px 16px;
-    border-left: 2px solid var(--border);
-    margin-bottom: 6px;
-    font-size: 14px;
-    color: var(--text-secondary);
-    transition: border-color 0.2s;
-  }
-  .manifest-item:last-child { margin-bottom: 0; }
-
-  /* History */
-  .history-item {
-    padding: 14px 0;
-    border-bottom: 1px solid var(--border);
-  }
-  .history-item:last-child { border-bottom: none; }
-  .history-day {
-    font-size: 12px;
-    color: var(--text-muted);
-    margin-bottom: 4px;
-  }
-  .history-q {
-    font-size: 14px;
-    color: var(--text-secondary);
-    margin-bottom: 6px;
-  }
-  .history-a {
-    font-size: 14px;
-    color: var(--text);
-    padding-left: 12px;
-    border-left: 2px solid var(--accent-light);
-  }
-
-  /* Locked state */
-  .locked {
-    opacity: 0.5;
-    pointer-events: none;
-    filter: grayscale(0.3);
-  }
-  .lock-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    font-size: 12px;
-    color: var(--text-muted);
-    margin-top: 8px;
-  }
-
-  /* Toast */
-  .toast {
-    position: fixed;
-    bottom: 80px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: var(--text);
-    color: #fff;
-    padding: 10px 20px;
-    border-radius: 20px;
-    font-size: 13px;
-    opacity: 0;
-    transition: opacity 0.3s;
-    pointer-events: none;
-    z-index: 100;
-  }
-  .toast.show { opacity: 1; }
-
-  /* Footer */
-  .footer {
-    text-align: center;
-    padding: 32px 0;
-    font-size: 12px;
-    color: var(--text-muted);
-  }
-
-  /* Tabs */
-  .tabs {
-    display: flex;
-    gap: 0;
-    margin-bottom: 16px;
-    background: var(--card);
-    border-radius: var(--radius);
-    padding: 4px;
-    border: 1px solid var(--border);
-  }
-  .tab {
+  .landing-card {
     flex: 1;
-    padding: 8px;
-    text-align: center;
-    font-size: 14px;
-    color: var(--text-muted);
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.2s;
-    font-weight: 400;
   }
-  .tab.active {
-    background: var(--accent-light);
-    color: var(--accent);
-    font-weight: 500;
-  }
+}
 
-  .hidden { display: none !important; }
+/* ── Back button ─────────────────────────────────────── */
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #999;
+  background: transparent;
+  border: 1px solid #e8e4dd;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s;
+  margin-bottom: 4px;
+}
+.back-btn:active {
+  background: #f5f2ed;
+  color: #6b6b6b;
+}
+
+/* ═══════════════════════════════════════════════════════
+   MANIFEST APP (warm tone: #b8956a)
+   ═══════════════════════════════════════════════════════ */
+.app-manifest {
+  --bg: #faf8f5;
+  --card: #ffffff;
+  --text: #2c2c2c;
+  --text-secondary: #6b6b6b;
+  --text-muted: #9a9a9a;
+  --accent: #b8956a;
+  --accent-light: #e8d5b5;
+  --border: #e8e4dd;
+  --success: #7a9e7e;
+  --radius: 12px;
+  --shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03);
+}
+
+.app-manifest .header {
+  text-align: center;
+  padding: 12px 0 20px;
+}
+.app-manifest .header h1 {
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--accent);
+  letter-spacing: 0.5px;
+}
+.app-manifest .header .subtitle {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-top: 6px;
+}
+
+.app-manifest .day-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--accent-light);
+  color: var(--accent);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 20px;
+}
+.app-manifest .day-badge .dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.app-manifest .progress-dots {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 28px;
+}
+.app-manifest .progress-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--border);
+  transition: all 0.3s;
+  position: relative;
+}
+.app-manifest .progress-dot.filled { background: var(--accent); }
+.app-manifest .progress-dot.today {
+  background: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-light);
+}
+
+.app-manifest .card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 24px 20px;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  transition: transform 0.2s;
+}
+
+.app-manifest .question-label {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--accent);
+  margin-bottom: 12px;
+  font-weight: 500;
+}
+.app-manifest .question-text {
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--text);
+  font-weight: 400;
+}
+.app-manifest .question-hint {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-top: 12px;
+  font-style: italic;
+}
+
+.app-manifest .answer-area { margin-top: 12px; }
+.app-manifest .answer-area textarea {
+  width: 100%;
+  min-height: 100px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px;
+  font-size: 15px;
+  font-family: inherit;
+  line-height: 1.6;
+  color: var(--text);
+  background: var(--bg);
+  resize: vertical;
+  transition: border-color 0.2s;
+}
+.app-manifest .answer-area textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  background: var(--card);
+}
+.app-manifest .answer-area textarea::placeholder { color: var(--text-muted); }
+
+.app-manifest .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+  width: 100%;
+}
+.app-manifest .btn-primary {
+  background: var(--accent);
+  color: #fff;
+}
+.app-manifest .btn-primary:active { background: #a07d55; }
+.app-manifest .btn-primary:disabled {
+  background: var(--border);
+  color: var(--text-muted);
+  cursor: not-allowed;
+}
+.app-manifest .btn-secondary {
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+}
+
+.app-manifest .mirror-card {
+  border-left: 3px solid var(--accent);
+  background: #fdfaf5;
+}
+.app-manifest .mirror-label {
+  font-size: 12px;
+  color: var(--accent);
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+.app-manifest .mirror-text {
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+.app-manifest .typing-indicator {
+  display: inline-flex;
+  gap: 4px;
+  padding: 8px 0;
+}
+.app-manifest .typing-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--accent-light);
+  animation: manifest-bounce 1.4s infinite ease-in-out;
+}
+.app-manifest .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+.app-manifest .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+@keyframes manifest-bounce {
+  0%, 80%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-6px); }
+}
+
+.app-manifest .manifest-section { margin-top: 12px; }
+.app-manifest .manifest-group { margin-bottom: 20px; }
+.app-manifest .manifest-group-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--accent);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.app-manifest .manifest-item {
+  padding: 8px 0 8px 16px;
+  border-left: 2px solid var(--border);
+  margin-bottom: 6px;
+  font-size: 14px;
+  color: var(--text-secondary);
+  transition: border-color 0.2s;
+}
+.app-manifest .manifest-item:last-child { margin-bottom: 0; }
+
+.app-manifest .history-item {
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+}
+.app-manifest .history-item:last-child { border-bottom: none; }
+.app-manifest .history-day {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+.app-manifest .history-q {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+}
+.app-manifest .history-a {
+  font-size: 14px;
+  color: var(--text);
+  padding-left: 12px;
+  border-left: 2px solid var(--accent-light);
+}
+
+.app-manifest .locked {
+  opacity: 0.5;
+  pointer-events: none;
+  filter: grayscale(0.3);
+}
+.app-manifest .lock-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 8px;
+}
+
+.app-manifest .footer {
+  text-align: center;
+  padding: 32px 0;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.app-manifest .tabs {
+  display: flex;
+  gap: 0;
+  margin-bottom: 16px;
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 4px;
+  border: 1px solid var(--border);
+}
+.app-manifest .tab {
+  flex: 1;
+  padding: 8px;
+  text-align: center;
+  font-size: 14px;
+  color: var(--text-muted);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-weight: 400;
+}
+.app-manifest .tab.active {
+  background: var(--accent-light);
+  color: var(--accent);
+  font-weight: 500;
+}
+
+/* Toast */
+.toast {
+  position: fixed;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #2c2c2c;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-size: 13px;
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+  z-index: 100;
+}
+.toast.show { opacity: 1; }
+
+/* ═══════════════════════════════════════════════════════
+   ABUNDANCE APP (green tone: #5b7b5e)
+   ═══════════════════════════════════════════════════════ */
+.app-abundance {
+  --bg: #f6f4f0;
+  --card: #fff;
+  --text: #2c2c2c;
+  --text2: #5c5c5c;
+  --text3: #999;
+  --accent: #5b7b5e;
+  --accent2: #b8956a;
+  --accent3: #8b6f47;
+  --border: #e8e4dd;
+  --shadow: 0 1px 3px rgba(0,0,0,.03), 0 4px 12px rgba(0,0,0,.02);
+  --radius: 14px;
+  --r-sm: 10px;
+}
+
+.app-abundance .ab-landing { text-align: center; padding: 40px 16px 20px; }
+.app-abundance .ab-landing .icon { font-size: 48px; margin-bottom: 24px; }
+.app-abundance .ab-landing h1 { font-size: 22px; font-weight: 600; color: var(--accent); margin-bottom: 12px; letter-spacing: .5px; }
+.app-abundance .ab-landing .desc { font-size: 15px; color: var(--text2); margin-bottom: 8px; line-height: 1.7; }
+.app-abundance .ab-landing .meta { font-size: 13px; color: var(--text3); margin-bottom: 36px; }
+
+.app-abundance .ab-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  padding: 14px 32px; border-radius: 10px; font-size: 16px; font-weight: 500;
+  border: none; cursor: pointer; transition: all .2s; font-family: inherit;
+}
+.app-abundance .ab-btn-primary { background: var(--accent); color: #fff; width: 100%; }
+.app-abundance .ab-btn-primary:active { background: #4a6a4d; }
+.app-abundance .ab-btn-outline { background: transparent; color: var(--accent); border: 1.5px solid var(--accent); }
+
+.app-abundance .progress-wrap { padding: 16px 0; }
+.app-abundance .progress-bar { height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.app-abundance .progress-fill { height: 100%; background: var(--accent); transition: width .3s; border-radius: 2px; }
+.app-abundance .progress-text { text-align: center; font-size: 12px; color: var(--text3); margin-top: 8px; }
+
+.app-abundance .section-break { text-align: center; padding: 40px 16px; }
+.app-abundance .section-break .section-label { font-size: 13px; color: var(--accent2); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 8px; }
+.app-abundance .section-break h2 { font-size: 20px; color: var(--text); font-weight: 500; margin-bottom: 24px; }
+
+.app-abundance .ab-card { background: var(--card); border-radius: var(--radius); padding: 28px 20px; margin-bottom: 16px; box-shadow: var(--shadow); border: 1px solid var(--border); }
+.app-abundance .q-num { font-size: 12px; color: var(--accent2); margin-bottom: 12px; font-weight: 500; letter-spacing: 1px; }
+.app-abundance .q-text { font-size: 17px; line-height: 1.6; color: var(--text); margin-bottom: 20px; font-weight: 400; }
+.app-abundance .option {
+  display: block; width: 100%; text-align: left; padding: 14px 16px; margin-bottom: 8px;
+  border: 1.5px solid var(--border); border-radius: var(--r-sm); background: var(--bg);
+  font-size: 15px; color: var(--text); cursor: pointer; transition: all .15s;
+  font-family: inherit; line-height: 1.5;
+}
+.app-abundance .option:active, .app-abundance .option.selected { background: var(--accent); color: #fff; border-color: var(--accent); }
+.app-abundance .option-label { font-weight: 500; margin-right: 6px; }
+
+.app-abundance .generating { text-align: center; padding: 60px 16px; }
+.app-abundance .generating .gen-icon { font-size: 48px; margin-bottom: 20px; animation: abundance-pulse 1.5s infinite; }
+.app-abundance .generating .gen-text { font-size: 16px; color: var(--text2); }
+@keyframes abundance-pulse { 0%, 100% { opacity: .3; transform: scale(.95) } 50% { opacity: 1; transform: scale(1.05) } }
+
+.app-abundance .result-header { text-align: center; padding: 16px 0 8px; }
+.app-abundance .result-header .index-num { font-size: 72px; font-weight: 700; color: var(--accent); line-height: 1; letter-spacing: -2px; }
+.app-abundance .result-header .index-label { font-size: 15px; color: var(--text2); margin-top: 4px; }
+.app-abundance .result-header .index-desc { font-size: 14px; color: var(--text2); margin-top: 12px; line-height: 1.7; max-width: 360px; margin-left: auto; margin-right: auto; }
+
+.app-abundance .radar-wrap { text-align: center; padding: 20px 0; }
+.app-abundance .radar-wrap canvas { max-width: 320px; width: 100%; }
+
+.app-abundance .section-title { font-size: 15px; font-weight: 600; color: var(--accent); margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
+.app-abundance .section-title .s-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+
+.app-abundance .result-text { font-size: 14px; color: var(--text2); line-height: 1.8; }
+
+.app-abundance .blindspot-box { background: #fdf8f2; border-left: 3px solid var(--accent2); padding: 16px; border-radius: 0 var(--r-sm) var(--r-sm) 0; margin: 12px 0; }
+.app-abundance .blindspot-box .bs-label { font-size: 12px; color: var(--accent2); font-weight: 500; margin-bottom: 6px; }
+.app-abundance .blindspot-box .bs-text { font-size: 14px; color: var(--text); line-height: 1.7; }
+
+.app-abundance .owned-list { list-style: none; }
+.app-abundance .owned-list li { padding: 10px 0 10px 24px; position: relative; font-size: 14px; color: var(--text2); line-height: 1.6; }
+.app-abundance .owned-list li::before { content: '📍'; position: absolute; left: 0; top: 10px; }
+
+.app-abundance .share-area { text-align: center; padding: 24px 0; }
+.app-abundance #shareCard { background: var(--card); border-radius: var(--radius); padding: 32px 24px; box-shadow: 0 2px 16px rgba(0,0,0,.06); border: 1px solid var(--border); text-align: center; margin-bottom: 16px; }
+.app-abundance #shareCard .sc-index { font-size: 64px; font-weight: 700; color: var(--accent); line-height: 1; }
+.app-abundance #shareCard .sc-label { font-size: 14px; color: var(--text2); margin: 4px 0 12px; }
+.app-abundance #shareCard .sc-top { font-size: 14px; color: var(--accent2); margin-bottom: 6px; font-weight: 500; }
+.app-abundance #shareCard .sc-blind { font-size: 13px; color: var(--text2); margin-bottom: 12px; }
+.app-abundance #shareCard .sc-footer { font-size: 11px; color: var(--text3); margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--border); }
+
+.app-abundance .fade-in { animation: abundance-fadeIn .5s ease-out; }
+@keyframes abundance-fadeIn { from { opacity: 0; transform: translateY(12px) } to { opacity: 1; transform: translateY(0) } }
+
+/* Shared utility helpers */
+.text-center { text-align: center; }
+.mt-12 { margin-top: 12px; }
+.mt-16 { margin-top: 16px; }
+.mt-24 { margin-top: 24px; }
 </style>
 </head>
 <body>
 
-<div class="container">
-  <div class="header">
-    <h1>显化清单</h1>
-    <div class="subtitle">🆕 更新测试 | 先看看你已经收到了什么</div>
-  </div>
+<!-- ═══════════════ LANDING PAGE ═══════════════ -->
+<div id="landingPage">
+  <div class="container">
+    <div class="landing-wrap">
+      <div class="landing-icon">📋</div>
+      <h1>显化清单 &amp; 丰盈体检</h1>
+      <div class="landing-sub">先看见已有的，再盘点你的丰盈</div>
 
-  <!-- Tabs -->
-  <div class="tabs" id="tabBar">
-    <div class="tab active" data-tab="today">今天的问题</div>
-    <div class="tab" data-tab="history">回顾</div>
-    <div class="tab" data-tab="manifest">显化清单</div>
-  </div>
-
-  <!-- Today Tab -->
-  <div id="todayTab">
-    <!-- Day indicator -->
-    <div style="text-align:center">
-      <div class="day-badge">
-        <span class="dot"></span>
-        第 <span id="currentDay">1</span> 天
-      </div>
-    </div>
-
-    <!-- Progress dots -->
-    <div class="progress-dots" id="progressDots"></div>
-
-    <!-- Question card -->
-    <div class="card" id="questionCard">
-      <div class="question-label">今天的问题</div>
-      <div class="question-text" id="questionText"></div>
-      <div class="question-hint" id="questionHint"></div>
-      
-      <div class="answer-area" id="answerArea">
-        <textarea id="answerInput" placeholder="写下你真实的想法，不用想太多…" rows="3"></textarea>
-        <div style="margin-top:12px">
-          <button class="btn btn-primary" id="submitBtn" onclick="submitAnswer()">记录</button>
+      <div class="landing-cards">
+        <div class="landing-card manifest-card" onclick="showManifest()">
+          <div class="lc-icon">🪞</div>
+          <div class="lc-title">每日显化</div>
+          <div class="lc-desc">7 天，每天一个问题。<br>不教你怎么吸引，帮你看见已有的。</div>
+          <span class="lc-accent">进入 →</span>
+        </div>
+        <div class="landing-card abundance-card" onclick="showAbundance()">
+          <div class="lc-icon">🔍</div>
+          <div class="lc-title">丰盈体检</div>
+          <div class="lc-desc">18 道选择题 · 15 分钟。<br>看清你已经拥有但忘了的东西。</div>
+          <span class="lc-accent">进入 →</span>
         </div>
       </div>
     </div>
-
-    <!-- Already answered today -->
-    <div class="card hidden" id="doneCard">
-      <div style="text-align:center;color:var(--success);font-size:15px;padding:12px 0;">
-        ✓ 今天的回答已记录
-      </div>
-      <div style="text-align:center;margin-top:8px">
-        <button class="btn btn-secondary" onclick="switchTab('history')" style="width:auto;padding:8px 20px;font-size:13px;">查看回顾</button>
-      </div>
-    </div>
-
-    <!-- Mirror follow-up -->
-    <div class="card mirror-card hidden" id="mirrorCard">
-      <div class="mirror-label">🪞 追问</div>
-      <div class="mirror-text" id="mirrorText"></div>
-      <div class="answer-area" style="margin-top:12px">
-        <textarea id="mirrorInput" placeholder="…" rows="2"></textarea>
-        <div style="margin-top:12px">
-          <button class="btn btn-primary" id="mirrorSubmitBtn" onclick="submitMirror()">回应</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Mirror answered -->
-    <div class="card hidden" id="mirrorDoneCard">
-      <div style="text-align:center;color:var(--success);font-size:14px;padding:8px 0;">
-        ✓ 已回应
-      </div>
-    </div>
   </div>
-
-  <!-- History Tab -->
-  <div id="historyTab" class="hidden">
-    <div class="card" id="historyContent">
-      <div style="text-align:center;color:var(--text-muted);padding:20px;" id="historyEmpty">
-        还没有回答记录。回到「今天的问题」开始吧。
-      </div>
-    </div>
-  </div>
-
-  <!-- Manifest Tab -->
-  <div id="manifestTab" class="hidden">
-    <div class="card" id="manifestContent">
-      <div style="text-align:center;color:var(--text-muted);padding:20px;" id="manifestLocked">
-        <div style="font-size:40px;margin-bottom:12px;">🔒</div>
-        <div>需要记录 <strong>7</strong> 天才能解锁显化清单</div>
-        <div class="lock-badge" style="justify-content:center;margin-top:12px;">
-          目前已记录 <span id="manifestProgressDays">0</span> / 7 天
-        </div>
-      </div>
-      <div id="manifestUnlocked" class="hidden">
-        <div style="font-size:15px;font-weight:500;margin-bottom:16px;color:var(--text);">
-          你已经收到的——
-        </div>
-        <div id="manifestList"></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="footer">不教你怎么吸引 · 帮你看见已有的</div>
 </div>
 
+<!-- ═══════════════ MANIFEST APP ═══════════════ -->
+<div id="manifestApp" class="app-manifest hidden">
+  <div class="container">
+    <button class="back-btn" onclick="showLanding()">← 返回首页</button>
+
+    <div class="header">
+      <h1>显化清单</h1>
+      <div class="subtitle">先看看你已经收到了什么</div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs" id="manifestTabBar">
+      <div class="tab active" data-tab="today">今天的问题</div>
+      <div class="tab" data-tab="history">回顾</div>
+      <div class="tab" data-tab="manifest">显化清单</div>
+    </div>
+
+    <!-- Today Tab -->
+    <div id="manifestTodayTab">
+      <div style="text-align:center">
+        <div class="day-badge">
+          <span class="dot"></span>
+          第 <span id="manifestCurrentDay">1</span> 天
+        </div>
+      </div>
+
+      <div class="progress-dots" id="manifestProgressDots"></div>
+
+      <div class="card" id="manifestQuestionCard">
+        <div class="question-label">今天的问题</div>
+        <div class="question-text" id="manifestQuestionText"></div>
+        <div class="question-hint" id="manifestQuestionHint"></div>
+
+        <div class="answer-area" id="manifestAnswerArea">
+          <textarea id="manifestAnswerInput" placeholder="写下你真实的想法，不用想太多…" rows="3"></textarea>
+          <div style="margin-top:12px">
+            <button class="btn btn-primary" id="manifestSubmitBtn" onclick="window.manifestApp.submitAnswer()">记录</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card hidden" id="manifestDoneCard">
+        <div style="text-align:center;color:var(--success);font-size:15px;padding:12px 0;">
+          ✓ 今天的回答已记录
+        </div>
+        <div style="text-align:center;margin-top:8px">
+          <button class="btn btn-secondary" onclick="window.manifestApp.switchTab('history')" style="width:auto;padding:8px 20px;font-size:13px;">查看回顾</button>
+        </div>
+      </div>
+
+      <div class="card mirror-card hidden" id="manifestMirrorCard">
+        <div class="mirror-label">🪞 追问</div>
+        <div class="mirror-text" id="manifestMirrorText"></div>
+        <div class="answer-area" style="margin-top:12px">
+          <textarea id="manifestMirrorInput" placeholder="…" rows="2"></textarea>
+          <div style="margin-top:12px">
+            <button class="btn btn-primary" id="manifestMirrorSubmitBtn" onclick="window.manifestApp.submitMirror()">回应</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card hidden" id="manifestMirrorDoneCard">
+        <div style="text-align:center;color:var(--success);font-size:14px;padding:8px 0;">
+          ✓ 已回应
+        </div>
+      </div>
+    </div>
+
+    <!-- History Tab -->
+    <div id="manifestHistoryTab" class="hidden">
+      <div class="card" id="manifestHistoryContent">
+        <div style="text-align:center;color:var(--text-muted);padding:20px;" id="manifestHistoryEmpty">
+          还没有回答记录。回到「今天的问题」开始吧。
+        </div>
+      </div>
+    </div>
+
+    <!-- Manifest Tab -->
+    <div id="manifestManifestTab" class="hidden">
+      <div class="card" id="manifestManifestContent">
+        <div style="text-align:center;color:var(--text-muted);padding:20px;" id="manifestLocked">
+          <div style="font-size:40px;margin-bottom:12px;">🔒</div>
+          <div>需要记录 <strong>7</strong> 天才能解锁显化清单</div>
+          <div class="lock-badge" style="justify-content:center;margin-top:12px;">
+            目前已记录 <span id="manifestProgressDays">0</span> / 7 天
+          </div>
+        </div>
+        <div id="manifestUnlocked" class="hidden">
+          <div style="font-size:15px;font-weight:500;margin-bottom:16px;color:var(--text);">
+            你已经收到的——
+          </div>
+          <div id="manifestList"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">不教你怎么吸引 · 帮你看见已有的</div>
+  </div>
+</div>
+
+<!-- ═══════════════ ABUNDANCE APP ═══════════════ -->
+<div id="abundanceApp" class="app-abundance hidden">
+  <div class="container">
+    <button class="back-btn" onclick="showLanding()">← 返回首页</button>
+    <div id="abundanceContainer"></div>
+  </div>
+</div>
+
+<!-- Toast (shared) -->
 <div class="toast" id="toast"></div>
 
 <script>
-// ── Questions ──────────────────────────────────────────
-const questions = [
-  {
-    q: "你现在住的这个房间里，有哪件东西是你一年前还没有的？它出现在你的生活里，是因为你做对了什么？",
-    hint: "不用很大，可以是一本书、一盏灯、一个习惯。"
-  },
-  {
-    q: "如果五年前的你看到现在的你，他会因为什么而羡慕？说具体。",
-    hint: "不是「更有钱」「更成熟」这种笼统的——说一件具体的事。"
-  },
-  {
-    q: "你最近有没有遇到过这样的情况：本来担心的事没发生，但它没发生的真正原因是什么——是你做了什么，还是世界本来就没那么危险？",
-    hint: "把担心的那件事写下来，然后看它为什么没发生。"
-  },
-  {
-    q: "今天有没有哪一刻，你完全没在想「下一步该做什么」？那一刻你在干什么？",
-    hint: "哪怕只有五分钟也算。"
-  },
-  {
-    q: "你认识的人里，有谁的生活方式是你曾经向往过、现在其实已经接近了的？",
-    hint: "不是比较，是看见——你已经在某个维度上靠近了。"
-  },
-  {
-    q: "最近一次你被别人帮助是什么时候？那个帮助是你主动开口要的，还是对方自己递过来的？",
-    hint: "如果是后者——说明你在别人的视野里，不是一个人。"
-  },
-  {
-    q: "你最近有没有为了自己而不是为了别人做的一件事？哪怕很小。",
-    hint: "不是为了让人满意，纯粹因为你想。"
-  },
-  {
-    q: "你过去三个月里，有没有哪件事是你一开始觉得「我不行」，但后来做到了的？",
-    hint: "不用多大，完成就算。"
-  },
-  {
-    q: "有没有某个技能或认知，是你现在觉得理所当然、但几年前还完全没有的？",
-    hint: "这种「理所当然感」本身就是证据——你已经不再是以前的你了。"
-  },
-  {
-    q: "你现在手机里最常用的三个 app 是什么？它们分别满足了你的什么需求——而「能满足这些需求」这件事本身，说明了什么？",
-    hint: "不是评价 app，是看你的需求是否被接住了。"
-  },
-  {
-    q: "最近一次你感到「安全」是什么时候？那种安全感的来源是什么？",
-    hint: "是一个地方、一个人、一个习惯，还是你自己给自己的？"
-  },
-  {
-    q: "有没有什么东西是你曾经非常想要、现在已经有了、但你很久没想起它了的？",
-    hint: "它可能就在你手边。"
-  },
-  {
-    q: "你今天在什么事情上做了选择（而不是被安排）？哪怕是很小的选择。",
-    hint: "选择本身就是一种拥有——你有选择的空间。"
-  },
-  {
-    q: "最近一次你和别人聊天，对方让你觉得「被理解了」是什么时候？他说了什么或做了什么？",
-    hint: "把那个瞬间还原出来。"
-  }
-];
+// ═══════════════════════════════════════════════════════
+//  MANIFEST APP SCOPE
+// ═══════════════════════════════════════════════════════
+window.manifestApp = (function() {
+  'use strict';
 
-// ── State ──────────────────────────────────────────────
-const STORAGE_KEY = 'manifest_app_state';
-const TODAY_KEY_PREFIX = 'manifest_day_';
-
-function loadState() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? JSON.parse(raw) : { startDate: null, days: {} };
-  } catch { return { startDate: null, days: {} }; }
-}
-
-function saveState(state) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-}
-
-function getTodayKey() {
-  const d = new Date();
-  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-}
-
-function getDayIndex(state) {
-  if (!state.startDate) return 1;
-  const start = new Date(state.startDate);
-  const today = new Date(getTodayKey());
-  const diff = Math.floor((today - start) / (1000*60*60*24));
-  return Math.max(1, Math.min(diff + 1, questions.length));
-}
-
-// ── Init ───────────────────────────────────────────────
-let state = loadState();
-if (!state.startDate) {
-  state.startDate = getTodayKey();
-  saveState(state);
-}
-
-const dayIndex = getDayIndex(state);
-const todayKey = getTodayKey();
-const todayData = state.days[todayKey] || { answered: false, mirrorAnswered: false };
-
-// ── Render ─────────────────────────────────────────────
-function renderProgress() {
-  const container = document.getElementById('progressDots');
-  container.innerHTML = '';
-  for (let i = 1; i <= 7; i++) {
-    const dot = document.createElement('div');
-    dot.className = 'progress-dot';
-    if (i < dayIndex) dot.classList.add('filled');
-    if (i === dayIndex) dot.classList.add('today');
-    container.appendChild(dot);
-  }
-}
-
-function renderToday() {
-  document.getElementById('currentDay').textContent = dayIndex;
-  renderProgress();
-
-  const q = questions[(dayIndex - 1) % questions.length];
-  document.getElementById('questionText').textContent = q.q;
-  document.getElementById('questionHint').textContent = q.hint || '';
-
-  if (todayData.answered) {
-    document.getElementById('answerArea').classList.add('hidden');
-    document.getElementById('doneCard').classList.remove('hidden');
-    document.getElementById('questionCard').querySelector('.question-label').textContent = '今天的问题 ✓';
-    
-    if (todayData.mirrorAnswer) {
-      document.getElementById('mirrorCard').classList.add('hidden');
-      document.getElementById('mirrorDoneCard').classList.remove('hidden');
-    } else if (todayData.mirrorQuestion) {
-      document.getElementById('mirrorCard').classList.remove('hidden');
-      document.getElementById('mirrorText').textContent = todayData.mirrorQuestion;
+  // ── Questions ────────────────────────────────────────
+  const questions = [
+    {
+      q: "你现在住的这个房间里，有哪件东西是你一年前还没有的？它出现在你的生活里，是因为你做对了什么？",
+      hint: "不用很大，可以是一本书、一盏灯、一个习惯。"
+    },
+    {
+      q: "如果五年前的你看到现在的你，他会因为什么而羡慕？说具体。",
+      hint: "不是「更有钱」「更成熟」这种笼统的——说一件具体的事。"
+    },
+    {
+      q: "你最近有没有遇到过这样的情况：本来担心的事没发生，但它没发生的真正原因是什么——是你做了什么，还是世界本来就没那么危险？",
+      hint: "把担心的那件事写下来，然后看它为什么没发生。"
+    },
+    {
+      q: "今天有没有哪一刻，你完全没在想「下一步该做什么」？那一刻你在干什么？",
+      hint: "哪怕只有五分钟也算。"
+    },
+    {
+      q: "你认识的人里，有谁的生活方式是你曾经向往过、现在其实已经接近了的？",
+      hint: "不是比较，是看见——你已经在某个维度上靠近了。"
+    },
+    {
+      q: "最近一次你被别人帮助是什么时候？那个帮助是你主动开口要的，还是对方自己递过来的？",
+      hint: "如果是后者——说明你在别人的视野里，不是一个人。"
+    },
+    {
+      q: "你最近有没有为了自己而不是为了别人做的一件事？哪怕很小。",
+      hint: "不是为了让人满意，纯粹因为你想。"
+    },
+    {
+      q: "你过去三个月里，有没有哪件事是你一开始觉得「我不行」，但后来做到了的？",
+      hint: "不用多大，完成就算。"
+    },
+    {
+      q: "有没有某个技能或认知，是你现在觉得理所当然、但几年前还完全没有的？",
+      hint: "这种「理所当然感」本身就是证据——你已经不再是以前的你了。"
+    },
+    {
+      q: "你现在手机里最常用的三个 app 是什么？它们分别满足了你的什么需求——而「能满足这些需求」这件事本身，说明了什么？",
+      hint: "不是评价 app，是看你的需求是否被接住了。"
+    },
+    {
+      q: "最近一次你感到「安全」是什么时候？那种安全感的来源是什么？",
+      hint: "是一个地方、一个人、一个习惯，还是你自己给自己的？"
+    },
+    {
+      q: "有没有什么东西是你曾经非常想要、现在已经有了、但你很久没想起它了的？",
+      hint: "它可能就在你手边。"
+    },
+    {
+      q: "你今天在什么事情上做了选择（而不是被安排）？哪怕是很小的选择。",
+      hint: "选择本身就是一种拥有——你有选择的空间。"
+    },
+    {
+      q: "最近一次你和别人聊天，对方让你觉得「被理解了」是什么时候？他说了什么或做了什么？",
+      hint: "把那个瞬间还原出来。"
     }
-  } else {
-    document.getElementById('answerArea').classList.remove('hidden');
-    document.getElementById('doneCard').classList.add('hidden');
-    document.getElementById('mirrorCard').classList.add('hidden');
-    document.getElementById('mirrorDoneCard').classList.add('hidden');
-  }
-}
-
-function renderHistory() {
-  const container = document.getElementById('historyContent');
-  const empty = document.getElementById('historyEmpty');
-  
-  const entries = Object.entries(state.days)
-    .filter(([_, d]) => d.answered)
-    .sort((a, b) => b[0].localeCompare(a[0]));
-
-  // Remove old history items (keep empty placeholder)
-  container.querySelectorAll('.history-item').forEach(el => el.remove());
-
-  if (entries.length === 0) {
-    empty.classList.remove('hidden');
-    return;
-  }
-  empty.classList.add('hidden');
-
-  entries.forEach(([dateKey, data]) => {
-    const div = document.createElement('div');
-    div.className = 'history-item';
-    const dayNum = getDayNumForDate(dateKey);
-    div.innerHTML = `
-      <div class="history-day">第 ${dayNum} 天 · ${dateKey}</div>
-      <div class="history-q">${data.question || '—'}</div>
-      <div class="history-a">${escapeHtml(data.answer || '')}</div>
-      ${data.mirrorQuestion ? `<div style="margin-top:8px;font-size:13px;color:var(--accent);">🪞 ${escapeHtml(data.mirrorQuestion)}</div>` : ''}
-      ${data.mirrorAnswer ? `<div class="history-a" style="margin-top:4px">${escapeHtml(data.mirrorAnswer)}</div>` : ''}
-    `;
-    container.appendChild(div);
-  });
-}
-
-function getDayNumForDate(dateKey) {
-  if (!state.startDate) return '?';
-  const start = new Date(state.startDate);
-  const d = new Date(dateKey);
-  const diff = Math.floor((d - start) / (1000*60*60*24));
-  return diff + 1;
-}
-
-function renderManifest() {
-  const locked = document.getElementById('manifestLocked');
-  const unlocked = document.getElementById('manifestUnlocked');
-  const list = document.getElementById('manifestList');
-  
-  const answeredDays = Object.values(state.days).filter(d => d.answered).length;
-  document.getElementById('manifestProgressDays').textContent = answeredDays;
-
-  if (answeredDays < 7) {
-    locked.classList.remove('hidden');
-    unlocked.classList.add('hidden');
-    return;
-  }
-
-  locked.classList.add('hidden');
-  unlocked.classList.remove('hidden');
-
-  // Generate manifestation list from answers
-  const allAnswers = Object.entries(state.days)
-    .filter(([_, d]) => d.answered)
-    .map(([date, d]) => ({ date, ...d }));
-
-  const categories = {
-    '你做到过但你忘了的事': [],
-    '你曾经担心但没发生的事': [],
-    '你现在拥有、过去只在「希望」阶段的事': [],
-    '你低估了的资源和连接': []
-  };
-
-  // Simple categorization based on keywords in answers and questions
-  allAnswers.forEach(entry => {
-    const combined = (entry.answer + ' ' + (entry.mirrorAnswer || '')).toLowerCase();
-    const q = (entry.question || '').toLowerCase();
-    
-    if (q.includes('担心') || q.includes('不行') || combined.includes('担心') || combined.includes('害怕')) {
-      categories['你曾经担心但没发生的事'].push(entry);
-    } else if (q.includes('向往') || q.includes('想要') || q.includes('希望') || combined.includes('曾经') || combined.includes('以前')) {
-      categories['你现在拥有、过去只在「希望」阶段的事'].push(entry);
-    } else if (q.includes('帮助') || q.includes('聊天') || q.includes('理解') || combined.includes('朋友') || combined.includes('家人') || combined.includes('同事')) {
-      categories['你低估了的资源和连接'].push(entry);
-    } else {
-      categories['你做到过但你忘了的事'].push(entry);
-    }
-  });
-
-  // Remove empty categories
-  Object.keys(categories).forEach(key => {
-    if (categories[key].length === 0) delete categories[key];
-  });
-
-  if (Object.keys(categories).length === 0) {
-    list.innerHTML = '<div style="color:var(--text-muted);text-align:center;padding:20px;">继续记录，让清单慢慢浮现。</div>';
-    return;
-  }
-
-  list.innerHTML = Object.entries(categories).map(([title, items]) => `
-    <div class="manifest-group">
-      <div class="manifest-group-title">
-        <span>✦</span> ${title}
-      </div>
-      ${items.map(item => `
-        <div class="manifest-item">
-          「${escapeHtml(item.question || '')}」<br>
-          <span style="color:var(--text);">${extractKeyInsight(item)}</span>
-        </div>
-      `).join('')}
-    </div>
-  `).join('');
-}
-
-function extractKeyInsight(entry) {
-  const answer = entry.answer || '';
-  // Extract first meaningful sentence
-  const sentences = answer.split(/[。！？\n]/).filter(s => s.trim().length > 5);
-  if (sentences.length > 0) {
-    return sentences[0].trim().substring(0, 60) + (sentences[0].trim().length > 60 ? '…' : '');
-  }
-  return answer.substring(0, 60);
-}
-
-function escapeHtml(str) {
-  const div = document.createElement('div');
-  div.textContent = str;
-  return div.innerHTML;
-}
-
-// ── Tab switching ──────────────────────────────────────
-function switchTab(tab) {
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  document.querySelector(`[data-tab="${tab}"]`).classList.add('active');
-  
-  document.getElementById('todayTab').classList.toggle('hidden', tab !== 'today');
-  document.getElementById('historyTab').classList.toggle('hidden', tab !== 'history');
-  document.getElementById('manifestTab').classList.toggle('hidden', tab !== 'manifest');
-  
-  if (tab === 'history') renderHistory();
-  if (tab === 'manifest') renderManifest();
-}
-
-document.getElementById('tabBar').addEventListener('click', e => {
-  const tab = e.target.closest('.tab');
-  if (tab) switchTab(tab.dataset.tab);
-});
-
-// ── AI Mirror ──────────────────────────────────────────
-function generateMirrorQuestion(answer) {
-  const a = answer.trim();
-  
-  // Pattern 1: "没那么X了" / "更X了" — ask about the turning point
-  if (/没那么|不再|比以前|更.*了|发生了变化|变了/.test(a)) {
-    return '具体是从什么时候开始变的？那个转折点前后，你做了什么不一样的事？';
-  }
-  
-  // Pattern 2: "我以为" / "本来以为" — challenge assumption, ask what really happened
-  if (/我以为|本来以为|原以为|以为会/.test(a)) {
-    return '那实际发生了什么，和你以为的有什么不同？这个差距告诉你什么？';
-  }
-  
-  // Pattern 3: Mentions a person — ask about what they reflect
-  if (/朋友|家人|同事|伴侣|老板|老师|同学|妈妈|爸爸/.test(a)) {
-    return '这个人出现在你的生活里，你觉得是你主动建立的关系，还是某种意义上的「刚好」？';
-  }
-  
-  // Pattern 4: "做到了" / "完成了" / "做对了" — ask what enabled it
-  if (/做到|完成|做对|成功|终于|搞定|学会/.test(a)) {
-    return '如果把这个能力拆开——你觉得里面有多少是自己的努力，多少是外部条件刚好成熟了？';
-  }
-  
-  // Pattern 5: Mentions time (最近 / 以前 / 过去)
-  if (/最近|以前|过去|曾经|小时候|几年前|上个月|上周/.test(a)) {
-    return '拿现在的你和那个时间点的你比——如果当时的你知道今天会变成这样，他会觉得意外吗？';
-  }
-  
-  // Pattern 6: Mentions a specific object or place
-  if (/房间|家里|办公室|桌子|电脑|手机|书|灯|椅子|杯子|床/.test(a)) {
-    return '这个东西在你的生活里扮演了什么角色——它是工具、陪伴、还是某种象征？';
-  }
-  
-  // Pattern 7: "够了" / "满足" / "满意" — explore what "enough" means to them
-  if (/够了|满足|满意|知足|挺好的|还不错/.test(a)) {
-    return '你说的「够了」——是妥协之后的接受，还是真的觉得不需要更多了？';
-  }
-  
-  // Default: ask for specificity
-  const patterns = [
-    '能不能再具体一点？比如某一天、某一个瞬间。',
-    '如果让你用一个画面来描述你说的这件事，那个画面里有什么？',
-    '这件事对你来说最珍贵的部分是什么——是结果，还是过程中的某个东西？',
   ];
-  return patterns[Math.floor(Math.random() * patterns.length)];
-}
 
-// ── Actions ────────────────────────────────────────────
-function submitAnswer() {
-  const input = document.getElementById('answerInput');
-  const answer = input.value.trim();
-  if (!answer) return;
-  
-  state.days[todayKey] = {
-    ...state.days[todayKey],
-    answered: true,
-    answer: answer,
-    question: questions[(dayIndex - 1) % questions.length].q
-  };
-  saveState(state);
-  
-  // Show done
-  document.getElementById('answerArea').classList.add('hidden');
-  document.getElementById('doneCard').classList.remove('hidden');
-  document.getElementById('questionCard').querySelector('.question-label').textContent = '今天的问题 ✓';
-  
-  // Generate mirror question after a brief delay
-  setTimeout(() => {
-    const mirrorQ = generateMirrorQuestion(answer);
-    state.days[todayKey].mirrorQuestion = mirrorQ;
+  // ── State ────────────────────────────────────────────
+  const STORAGE_KEY = 'manifest_app_state';
+  const TODAY_KEY_PREFIX = 'manifest_day_';
+
+  let state;
+  let dayIndex;
+  let todayKey;
+  let todayData;
+
+  function loadState() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      return raw ? JSON.parse(raw) : { startDate: null, days: {} };
+    } catch(e) { return { startDate: null, days: {} }; }
+  }
+
+  function saveState(s) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(s));
+  }
+
+  function getTodayKey() {
+    const d = new Date();
+    return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+  }
+
+  function getDayIndex(st) {
+    if (!st.startDate) return 1;
+    const start = new Date(st.startDate);
+    const today = new Date(getTodayKey());
+    const diff = Math.floor((today - start) / (1000*60*60*24));
+    return Math.max(1, Math.min(diff + 1, questions.length));
+  }
+
+  function getDayNumForDate(dateKey) {
+    if (!state.startDate) return '?';
+    const start = new Date(state.startDate);
+    const d = new Date(dateKey);
+    const diff = Math.floor((d - start) / (1000*60*60*24));
+    return diff + 1;
+  }
+
+  function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  function extractKeyInsight(entry) {
+    const answer = entry.answer || '';
+    const sentences = answer.split(/[。！？\n]/).filter(function(s) { return s.trim().length > 5; });
+    if (sentences.length > 0) {
+      return sentences[0].trim().substring(0, 60) + (sentences[0].trim().length > 60 ? '…' : '');
+    }
+    return answer.substring(0, 60);
+  }
+
+  // ── Render ───────────────────────────────────────────
+  function renderProgress() {
+    var container = document.getElementById('manifestProgressDots');
+    container.innerHTML = '';
+    for (var i = 1; i <= 7; i++) {
+      var dot = document.createElement('div');
+      dot.className = 'progress-dot';
+      if (i < dayIndex) dot.classList.add('filled');
+      if (i === dayIndex) dot.classList.add('today');
+      container.appendChild(dot);
+    }
+  }
+
+  function renderToday() {
+    document.getElementById('manifestCurrentDay').textContent = dayIndex;
+    renderProgress();
+
+    var q = questions[(dayIndex - 1) % questions.length];
+    document.getElementById('manifestQuestionText').textContent = q.q;
+    document.getElementById('manifestQuestionHint').textContent = q.hint || '';
+
+    if (todayData.answered) {
+      document.getElementById('manifestAnswerArea').classList.add('hidden');
+      document.getElementById('manifestDoneCard').classList.remove('hidden');
+      var qLabel = document.getElementById('manifestQuestionCard').querySelector('.question-label');
+      if (qLabel) qLabel.textContent = '今天的问题 ✓';
+
+      if (todayData.mirrorAnswer) {
+        document.getElementById('manifestMirrorCard').classList.add('hidden');
+        document.getElementById('manifestMirrorDoneCard').classList.remove('hidden');
+      } else if (todayData.mirrorQuestion) {
+        document.getElementById('manifestMirrorCard').classList.remove('hidden');
+        document.getElementById('manifestMirrorText').textContent = todayData.mirrorQuestion;
+      }
+    } else {
+      document.getElementById('manifestAnswerArea').classList.remove('hidden');
+      document.getElementById('manifestDoneCard').classList.add('hidden');
+      document.getElementById('manifestMirrorCard').classList.add('hidden');
+      document.getElementById('manifestMirrorDoneCard').classList.add('hidden');
+    }
+  }
+
+  function renderHistory() {
+    var container = document.getElementById('manifestHistoryContent');
+    var empty = document.getElementById('manifestHistoryEmpty');
+
+    var entries = Object.entries(state.days)
+      .filter(function(e) { return e[1].answered; })
+      .sort(function(a, b) { return b[0].localeCompare(a[0]); });
+
+    // Remove old history items
+    var oldItems = container.querySelectorAll('.history-item');
+    oldItems.forEach(function(el) { el.remove(); });
+
+    if (entries.length === 0) {
+      empty.classList.remove('hidden');
+      return;
+    }
+    empty.classList.add('hidden');
+
+    entries.forEach(function(entry) {
+      var dateKey = entry[0];
+      var data = entry[1];
+      var div = document.createElement('div');
+      div.className = 'history-item';
+      var dayNum = getDayNumForDate(dateKey);
+      div.innerHTML =
+        '<div class="history-day">第 ' + dayNum + ' 天 · ' + dateKey + '</div>' +
+        '<div class="history-q">' + escapeHtml(data.question || '') + '</div>' +
+        '<div class="history-a">' + escapeHtml(data.answer || '') + '</div>' +
+        (data.mirrorQuestion ? '<div style="margin-top:8px;font-size:13px;color:var(--accent);">🪞 ' + escapeHtml(data.mirrorQuestion) + '</div>' : '') +
+        (data.mirrorAnswer ? '<div class="history-a" style="margin-top:4px">' + escapeHtml(data.mirrorAnswer) + '</div>' : '');
+      container.appendChild(div);
+    });
+  }
+
+  function renderManifest() {
+    var locked = document.getElementById('manifestLocked');
+    var unlocked = document.getElementById('manifestUnlocked');
+    var list = document.getElementById('manifestList');
+
+    var answeredDays = Object.values(state.days).filter(function(d) { return d.answered; }).length;
+    document.getElementById('manifestProgressDays').textContent = answeredDays;
+
+    if (answeredDays < 7) {
+      locked.classList.remove('hidden');
+      unlocked.classList.add('hidden');
+      return;
+    }
+
+    locked.classList.add('hidden');
+    unlocked.classList.remove('hidden');
+
+    var allAnswers = Object.entries(state.days)
+      .filter(function(e) { return e[1].answered; })
+      .map(function(e) { return { date: e[0], question: e[1].question, answer: e[1].answer, mirrorAnswer: e[1].mirrorAnswer }; });
+
+    var categories = {
+      '你做到过但你忘了的事': [],
+      '你曾经担心但没发生的事': [],
+      '你现在拥有、过去只在「希望」阶段的事': [],
+      '你低估了的资源和连接': []
+    };
+
+    allAnswers.forEach(function(entry) {
+      var combined = (entry.answer + ' ' + (entry.mirrorAnswer || '')).toLowerCase();
+      var q = (entry.question || '').toLowerCase();
+
+      if (q.indexOf('担心') !== -1 || q.indexOf('不行') !== -1 || combined.indexOf('担心') !== -1 || combined.indexOf('害怕') !== -1) {
+        categories['你曾经担心但没发生的事'].push(entry);
+      } else if (q.indexOf('向往') !== -1 || q.indexOf('想要') !== -1 || q.indexOf('希望') !== -1 || combined.indexOf('曾经') !== -1 || combined.indexOf('以前') !== -1) {
+        categories['你现在拥有、过去只在「希望」阶段的事'].push(entry);
+      } else if (q.indexOf('帮助') !== -1 || q.indexOf('聊天') !== -1 || q.indexOf('理解') !== -1 || combined.indexOf('朋友') !== -1 || combined.indexOf('家人') !== -1 || combined.indexOf('同事') !== -1) {
+        categories['你低估了的资源和连接'].push(entry);
+      } else {
+        categories['你做到过但你忘了的事'].push(entry);
+      }
+    });
+
+    // Remove empty categories
+    Object.keys(categories).forEach(function(key) {
+      if (categories[key].length === 0) delete categories[key];
+    });
+
+    if (Object.keys(categories).length === 0) {
+      list.innerHTML = '<div style="color:var(--text-muted);text-align:center;padding:20px;">继续记录，让清单慢慢浮现。</div>';
+      return;
+    }
+
+    list.innerHTML = Object.entries(categories).map(function(entry) {
+      var title = entry[0];
+      var items = entry[1];
+      return '<div class="manifest-group">' +
+        '<div class="manifest-group-title"><span>✦</span> ' + title + '</div>' +
+        items.map(function(item) {
+          return '<div class="manifest-item">「' + escapeHtml(item.question || '') + '」<br><span style="color:var(--text);">' + extractKeyInsight(item) + '</span></div>';
+        }).join('') +
+        '</div>';
+    }).join('');
+  }
+
+  // ── AI Mirror ────────────────────────────────────────
+  function generateMirrorQuestion(answer) {
+    var a = answer.trim();
+
+    if (/没那么|不再|比以前|更.*了|发生了变化|变了/.test(a)) {
+      return '具体是从什么时候开始变的？那个转折点前后，你做了什么不一样的事？';
+    }
+
+    if (/我以为|本来以为|原以为|以为会/.test(a)) {
+      return '那实际发生了什么，和你以为的有什么不同？这个差距告诉你什么？';
+    }
+
+    if (/朋友|家人|同事|伴侣|老板|老师|同学|妈妈|爸爸/.test(a)) {
+      return '这个人出现在你的生活里，你觉得是你主动建立的关系，还是某种意义上的「刚好」？';
+    }
+
+    if (/做到|完成|做对|成功|终于|搞定|学会/.test(a)) {
+      return '如果把这个能力拆开——你觉得里面有多少是自己的努力，多少是外部条件刚好成熟了？';
+    }
+
+    if (/最近|以前|过去|曾经|小时候|几年前|上个月|上周/.test(a)) {
+      return '拿现在的你和那个时间点的你比——如果当时的你知道今天会变成这样，他会觉得意外吗？';
+    }
+
+    if (/房间|家里|办公室|桌子|电脑|手机|书|灯|椅子|杯子|床/.test(a)) {
+      return '这个东西在你的生活里扮演了什么角色——它是工具、陪伴、还是某种象征？';
+    }
+
+    if (/够了|满足|满意|知足|挺好的|还不错/.test(a)) {
+      return '你说的「够了」——是妥协之后的接受，还是真的觉得不需要更多了？';
+    }
+
+    var patterns = [
+      '能不能再具体一点？比如某一天、某一个瞬间。',
+      '如果让你用一个画面来描述你说的这件事，那个画面里有什么？',
+      '这件事对你来说最珍贵的部分是什么——是结果，还是过程中的某个东西？'
+    ];
+    return patterns[Math.floor(Math.random() * patterns.length)];
+  }
+
+  function showToast(msg) {
+    var toast = document.getElementById('toast');
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(function() { toast.classList.remove('show'); }, 2000);
+  }
+
+  // ── Tab switching ────────────────────────────────────
+  function switchTab(tab) {
+    var app = document.getElementById('manifestApp');
+    var tabs = app.querySelectorAll('.tab');
+    tabs.forEach(function(t) { t.classList.remove('active'); });
+    var target = app.querySelector('[data-tab="' + tab + '"]');
+    if (target) target.classList.add('active');
+
+    document.getElementById('manifestTodayTab').classList.toggle('hidden', tab !== 'today');
+    document.getElementById('manifestHistoryTab').classList.toggle('hidden', tab !== 'history');
+    document.getElementById('manifestManifestTab').classList.toggle('hidden', tab !== 'manifest');
+
+    if (tab === 'history') renderHistory();
+    if (tab === 'manifest') renderManifest();
+  }
+
+  // ── Actions ──────────────────────────────────────────
+  function submitAnswer() {
+    var input = document.getElementById('manifestAnswerInput');
+    var answer = input.value.trim();
+    if (!answer) return;
+
+    state.days[todayKey] = {
+      answered: true,
+      answer: answer,
+      question: questions[(dayIndex - 1) % questions.length].q,
+      mirrorQuestion: state.days[todayKey] ? state.days[todayKey].mirrorQuestion : undefined,
+      mirrorAnswer: state.days[todayKey] ? state.days[todayKey].mirrorAnswer : undefined
+    };
     saveState(state);
-    todayData.mirrorQuestion = mirrorQ;
-    document.getElementById('mirrorText').textContent = mirrorQ;
-    document.getElementById('mirrorCard').classList.remove('hidden');
-    document.getElementById('mirrorInput').value = '';
-    document.getElementById('mirrorInput').focus();
-  }, 800);
-  
-  showToast('已记录 ✨');
+
+    document.getElementById('manifestAnswerArea').classList.add('hidden');
+    document.getElementById('manifestDoneCard').classList.remove('hidden');
+    var qLabel = document.getElementById('manifestQuestionCard').querySelector('.question-label');
+    if (qLabel) qLabel.textContent = '今天的问题 ✓';
+
+    setTimeout(function() {
+      var mirrorQ = generateMirrorQuestion(answer);
+      state.days[todayKey].mirrorQuestion = mirrorQ;
+      saveState(state);
+      todayData.mirrorQuestion = mirrorQ;
+      document.getElementById('manifestMirrorText').textContent = mirrorQ;
+      document.getElementById('manifestMirrorCard').classList.remove('hidden');
+      document.getElementById('manifestMirrorInput').value = '';
+      document.getElementById('manifestMirrorInput').focus();
+    }, 800);
+
+    showToast('已记录 ✨');
+  }
+
+  function submitMirror() {
+    var input = document.getElementById('manifestMirrorInput');
+    var answer = input.value.trim();
+    if (!answer) return;
+
+    state.days[todayKey].mirrorAnswer = answer;
+    saveState(state);
+
+    document.getElementById('manifestMirrorCard').classList.add('hidden');
+    document.getElementById('manifestMirrorDoneCard').classList.remove('hidden');
+
+    showToast('已回应 🪞');
+  }
+
+  // ── Init ─────────────────────────────────────────────
+  function init() {
+    state = loadState();
+    if (!state.startDate) {
+      state.startDate = getTodayKey();
+      saveState(state);
+    }
+    dayIndex = getDayIndex(state);
+    todayKey = getTodayKey();
+    todayData = state.days[todayKey] || { answered: false, mirrorAnswered: false };
+    renderToday();
+  }
+
+  // ── Tab bar event ────────────────────────────────────
+  document.getElementById('manifestTabBar').addEventListener('click', function(e) {
+    var tab = e.target.closest('.tab');
+    if (tab) switchTab(tab.dataset.tab);
+  });
+
+  // ── Public API ───────────────────────────────────────
+  return {
+    init: init,
+    submitAnswer: submitAnswer,
+    submitMirror: submitMirror,
+    switchTab: switchTab
+  };
+})();
+
+
+// ═══════════════════════════════════════════════════════
+//  ABUNDANCE APP SCOPE
+// ═══════════════════════════════════════════════════════
+window.abundanceApp = (function() {
+  'use strict';
+
+  // ── Questions ────────────────────────────────────────
+  var questions = [
+    { id: 1,  q: "过去一年，你学会了一项以前不会的东西。它属于？", dim: 1, type: "objective", options: [
+      { t: "技术或工具类", s: 3 }, { t: "表达或创作类", s: 3 }, { t: "生活或实践类", s: 2 }, { t: "人际或管理类", s: 2 }, { t: "还没有学会什么新东西", s: 0 }
+    ]},
+    { id: 2,  q: "你现在用的最贵的那样东西（除了房子和车），是你什么时候得到的？", dim: 1, type: "objective", options: [
+      { t: "最近半年内", s: 1 }, { t: "半年到一年前", s: 2 }, { t: "一到三年前", s: 3 }, { t: "三年以上", s: 3 }, { t: "没有称得上贵的东西", s: 0 }
+    ]},
+    { id: 3,  q: "你上次因为懂得比别人多而帮到一个人，是在什么场景？", dim: 1, type: "objective", options: [
+      { t: "工作专业领域", s: 3 }, { t: "生活经验或常识", s: 2 }, { t: "技术工具或数码产品", s: 2 }, { t: "人际关系或情感", s: 2 }, { t: "不记得帮过", s: 0 }
+    ]},
+    { id: 4,  q: "如果明天你的主要收入来源断了，你多久能找到新方向？", dim: 1, type: "subjective", options: [
+      { t: "已经有几个明确方向", s: 3 }, { t: "大概一个月内能搞定", s: 2 }, { t: "可能需要几个月", s: 1 }, { t: "完全没头绪", s: 0 }
+    ]},
+    { id: 5,  q: "如果有人认真夸你的某项能力，你的第一反应是？", dim: 1, type: "subjective", options: [
+      { t: "真心认同，确实做得不错", s: 3 }, { t: "有点不好意思，但想想也对", s: 2 }, { t: "觉得对方是在客气", s: 1 }, { t: "觉得对方看走眼了", s: 0 }
+    ]},
+    { id: 6,  q: "你觉得你的技能组合，放在你认识的人里大概排多少？", dim: 1, type: "subjective", options: [
+      { t: "比大多数人有优势", s: 3 }, { t: "中等偏上", s: 2 }, { t: "差不多平均水平", s: 1 }, { t: "不太有优势", s: 0 }
+    ]},
+    { id: 7,  q: "你手机里能半夜打电话求助的人有几个？", dim: 2, type: "objective", options: [
+      { t: "5 个以上", s: 3 }, { t: "3–5 个", s: 2 }, { t: "1–2 个", s: 1 }, { t: "没有", s: 0 }
+    ]},
+    { id: 8,  q: "最近一个月内，主动联系你、问你近况的人（不算工作关系）有几个？", dim: 2, type: "objective", options: [
+      { t: "5 个以上", s: 3 }, { t: "3–5 个", s: 2 }, { t: "1–2 个", s: 1 }, { t: "没有", s: 0 }
+    ]},
+    { id: 9,  q: "最近一次有人认真感谢你，是因为什么？", dim: 2, type: "objective", options: [
+      { t: "帮了对方一个具体的忙", s: 2 }, { t: "长期的陪伴或支持", s: 3 }, { t: "给了对方重要的建议或启发", s: 3 }, { t: "记不太清了", s: 0 }
+    ]},
+    { id: 10, q: "你觉得自己是一个"有人可以依靠"的人吗？", dim: 2, type: "subjective", options: [
+      { t: "非常确定，不止一个人", s: 3 }, { t: "大多数时候是", s: 2 }, { t: "不太确定", s: 1 }, { t: "不是", s: 0 }
+    ]},
+    { id: 11, q: "你认识的人里，有没有谁的生活是你曾经羡慕过、但现在回头看发现自己其实也差不多拥有了的？", dim: 2, type: "subjective", options: [
+      { t: "有，而且不止一个", s: 3 }, { t: "有一个", s: 2 }, { t: "可能有但没仔细想过", s: 1 }, { t: "没有", s: 0 }
+    ]},
+    { id: 12, q: "遇到困难或纠结时，你通常会找人聊吗？", dim: 2, type: "subjective", options: [
+      { t: "有固定的人可以聊，随时找得到", s: 3 }, { t: "会找，看情况选不同的人", s: 2 }, { t: "偶尔找，不太习惯", s: 1 }, { t: "基本不找人聊", s: 0 }
+    ]},
+    { id: 13, q: "一年前你最焦虑的那件事，现在回头看，实际发生了什么？", dim: 3, type: "objective", options: [
+      { t: "完全没发生，白焦虑了", s: 3 }, { t: "发生了，但远没有想的那么糟", s: 3 }, { t: "发生了，但扛过来了", s: 2 }, { t: "确实发生了且影响很大", s: 0 }
+    ]},
+    { id: 14, q: "你有没有一件"当初觉得绝对做不到、后来居然做到了"的事？", dim: 3, type: "objective", options: [
+      { t: "不止一件，能说出两三件", s: 3 }, { t: "有一件很明确的", s: 2 }, { t: "可能有但不太确定", s: 1 }, { t: "没有", s: 0 }
+    ]},
+    { id: 15, q: "最近一次意外的正面结果（你没期待、但事情比预期好），发生在什么时候？", dim: 3, type: "objective", options: [
+      { t: "一周内", s: 3 }, { t: "一个月内", s: 2 }, { t: "三个月内", s: 1 }, { t: "记不清了", s: 0 }
+    ]},
+    { id: 16, q: "你觉得过去一年，自己是变好了还是变差了？", dim: 3, type: "subjective", options: [
+      { t: "明显变好了", s: 3 }, { t: "有些方面变好了", s: 2 }, { t: "有好有坏，差不多", s: 1 }, { t: "变差了", s: 0 }
+    ]},
+    { id: 17, q: "你觉得"我是个运气好的人"这句话，有几分符合你？", dim: 3, type: "subjective", options: [
+      { t: "很符合，经历验证过", s: 3 }, { t: "有点符合，某些方面确实运气好", s: 2 }, { t: "不太符合，运气一般", s: 1 }, { t: "不符合，运气不太好", s: 0 }
+    ]},
+    { id: 18, q: "你觉得一年后的你回头看现在的你，会觉得现在担心的事里有多少是白担心的？", dim: 3, type: "subjective", options: [
+      { t: "大部分都不值得担心", s: 3 }, { t: "一半一半吧", s: 2 }, { t: "大部分确实值得担心", s: 1 }, { t: "全都是值得担心的", s: 0 }
+    ]}
+  ];
+
+  // ── State ────────────────────────────────────────────
+  var answers = [];
+  var currentQ = 0;
+  var currentScreen = 'landing';
+
+  function getContainer() {
+    return document.getElementById('abundanceContainer');
+  }
+
+  // ── Scoring ─────────────────────────────────────────
+  function calcScores() {
+    var dims = {
+      1: { obj: { total: 0, max: 0 }, sub: { total: 0, max: 0 } },
+      2: { obj: { total: 0, max: 0 }, sub: { total: 0, max: 0 } },
+      3: { obj: { total: 0, max: 0 }, sub: { total: 0, max: 0 } }
+    };
+    answers.forEach(function(a) {
+      var q = questions[a.qIdx];
+      var d = dims[q.dim];
+      var key = q.type === 'objective' ? 'obj' : 'sub';
+      d[key].total += a.score;
+      d[key].max += 3;
+    });
+    var result = { dimensions: {}, totalObj: 0, totalSub: 0, totalMaxObj: 0, totalMaxSub: 0 };
+    [1, 2, 3].forEach(function(d) {
+      var obj = dims[d].obj.max > 0 ? Math.round(dims[d].obj.total / dims[d].obj.max * 100) : 0;
+      var sub = dims[d].sub.max > 0 ? Math.round(dims[d].sub.total / dims[d].sub.max * 100) : 0;
+      var type;
+      if (obj >= 60 && sub >= 60) type = 'confirmed';
+      else if (obj >= 60 && sub < 60) type = 'blindspot';
+      else if (obj < 60 && sub >= 60) type = 'resilience';
+      else type = 'developing';
+      result.dimensions[d] = { obj: obj, sub: sub, type: type };
+      result.totalObj += obj;
+      result.totalSub += sub;
+      result.totalMaxObj += 100;
+      result.totalMaxSub += 100;
+    });
+    result.index = Math.round((result.totalObj + result.totalSub) / 6);
+    return result;
+  }
+
+  function getIndexDesc(score) {
+    if (score >= 80) return "你的丰盈程度很高。你不仅拥有很多，而且你清楚地意识到了这些。保持这种觉察，它是你面对不确定性的底气。";
+    if (score >= 65) return "你拥有的比你以为的多。尤其是在某些维度上，你可能低估了自己已经积累的资源。再仔细看看下面的分析。";
+    if (score >= 50) return "你的生活里有不少好东西，但你可能习惯了不把它们当回事。试试重新审视一下——有些东西你早已拥有。";
+    return "丰盈不是指你拥有多少，而是你是否看见。你的生活里有值得注意的资源，可能只是还没被照亮。慢慢来。";
+  }
+
+  function getDimName(d) {
+    return d === 1 ? '物质与能力' : d === 2 ? '关系与连接' : '经历与验证';
+  }
+
+  function getConfirmedText(dimNum) {
+    var map = {
+      1: "你的能力和物质基础是你最稳固的丰盈来源。你学会过新东西、拥有让你安心的物品、你的专业能力被验证过。这些不是运气——是你日积月累的结果。",
+      2: "你身边的人是你最宝贵的资产。有人主动联系你、感谢过你、可以在深夜接你电话。这些连接不是理所当然的——是你经营和吸引来的。",
+      3: "你经历过的事给了你最大的底气。那些曾经让你焦虑的事大多没有按最坏的剧本发生，你做到过"以为做不到"的事。这些经历已经内化成了你的韧性。"
+    };
+    return map[dimNum] || '';
+  }
+
+  function getBlindspotText(dimNum) {
+    var map = {
+      1: "你可能低估了自己的能力和资源。客观数据显示你拥有不少——但你对自己的评分偏低。有没有可能你已经把一个"正常水平"当成了"不够好"？试着换个参照系看看。",
+      2: "你的数据显示你不是一个人——有不止一个人会主动找你、感谢过你、可以依靠。但你对自己"有人可以依靠"的感知偏低。明明有，却不太当回事。你有没有在把"不想麻烦别人"和"没有人可以依靠"搞混？",
+      3: "你经历过的考验比你以为的多，但你可能没有把它们"归档"为你的能力。那些挺过来的时刻、那些没发生的灾难、那些意外的好结果——它们都是你的验证数据。别轻易忽略。"
+    };
+    return map[dimNum] || '';
+  }
+
+  function getOwnedItems(ans, dims) {
+    var items = [];
+    var byId = {};
+    ans.forEach(function(a) { byId[a.qIdx] = a; });
+
+    if (byId[0]  && byId[0].score  >= 2) items.push("你有一项过去一年新获得的能力");
+    if (byId[1]  && byId[1].score  >= 2) items.push("你拥有一件陪伴了你不止半年的珍贵物品");
+    if (byId[2]  && byId[2].score  >= 2) items.push("你的专业知识曾经真实地帮助过别人");
+    if (byId[6]  && byId[6].score  >= 2) items.push("你手机里有不止一个可以在深夜求助的人");
+    if (byId[7]  && byId[7].score  >= 2) items.push("最近有人主动关心过你的近况");
+    if (byId[8]  && byId[8].score  >= 2) items.push("有人认真感谢过你——因为陪伴、支持或启发");
+    if (byId[12] && byId[12].score >= 2) items.push("一年前让你焦虑的事，实际结果远没有那么糟");
+    if (byId[13] && byId[13].score >= 1) items.push("你做到过一件"曾经以为做不到"的事");
+    if (byId[14] && byId[14].score >= 2) items.push("最近一个月内遇到过意外的正面结果");
+    if (byId[15] && byId[15].score >= 2) items.push("你觉得自己过去一年在变好");
+
+    if (items.length < 3) {
+      var fallbacks = [
+        "你完成了一次认真的自我盘点——这本身就不容易",
+        "你有能力停下来审视自己的生活",
+        "你在这里花了15分钟关注自己"
+      ];
+      while (items.length < 3) items.push(fallbacks[items.length % 3]);
+    }
+    return items.slice(0, 5);
+  }
+
+  // ── Radar Chart ──────────────────────────────────────
+  function drawRadar(canvas, dims) {
+    var ctx = canvas.getContext('2d');
+    var w = canvas.width = 320;
+    var h = canvas.height = 320;
+    var cx = w / 2, cy = h / 2, r = 120;
+    var labels = ['物质与能力', '关系与连接', '经历与验证'];
+    var angles = [-Math.PI / 2, Math.PI / 6, 5 * Math.PI / 6];
+
+    ctx.clearRect(0, 0, w, h);
+
+    // Grid
+    for (var i = 1; i <= 5; i++) {
+      ctx.beginPath();
+      var rr = r * i / 5;
+      for (var j = 0; j < 3; j++) {
+        var a = angles[j];
+        var x = cx + rr * Math.cos(a);
+        var y = cy + rr * Math.sin(a);
+        j === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+      }
+      ctx.closePath();
+      ctx.strokeStyle = '#e8e4dd';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+    }
+
+    // Axes
+    angles.forEach(function(a) {
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.lineTo(cx + r * Math.cos(a), cy + r * Math.sin(a));
+      ctx.strokeStyle = '#e8e4dd';
+      ctx.stroke();
+    });
+
+    // Labels
+    ctx.fillStyle = '#5c5c5c';
+    ctx.font = '13px -apple-system, "PingFang SC", sans-serif';
+    ctx.textAlign = 'center';
+    angles.forEach(function(a, i) {
+      var lr = r + 30;
+      var x = cx + lr * Math.cos(a);
+      var y = cy + lr * Math.sin(a);
+      ctx.fillText(labels[i], x, y + 5);
+    });
+
+    // Data polygon helper
+    function drawPolygon(values, color, dashed, alpha) {
+      ctx.beginPath();
+      for (var i = 0; i < 3; i++) {
+        var val = Math.max(5, values[i]) / 100;
+        var rr = r * val;
+        var x = cx + rr * Math.cos(angles[i]);
+        var y = cy + rr * Math.sin(angles[i]);
+        i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+      }
+      ctx.closePath();
+      if (dashed) ctx.setLineDash([4, 4]); else ctx.setLineDash([]);
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 2.5;
+      ctx.stroke();
+      if (color.startsWith('#')) {
+        var rr2 = parseInt(color.slice(1, 3), 16);
+        var gg = parseInt(color.slice(3, 5), 16);
+        var bb = parseInt(color.slice(5, 7), 16);
+        ctx.fillStyle = 'rgba(' + rr2 + ',' + gg + ',' + bb + ',' + alpha + ')';
+      } else {
+        ctx.fillStyle = color.replace(')', ',' + alpha + ')').replace('rgb', 'rgba');
+      }
+      ctx.fill();
+      ctx.setLineDash([]);
+    }
+
+    var objVals = [dims[1].obj, dims[2].obj, dims[3].obj];
+    var subVals = [dims[1].sub, dims[2].sub, dims[3].sub];
+
+    drawPolygon(subVals, '#b8956a', true, 0.1);
+    drawPolygon(objVals, '#5b7b5e', false, 0.15);
+
+    // Legend
+    ctx.font = '11px -apple-system, "PingFang SC", sans-serif';
+    var lx = 20, ly = h - 30;
+    ctx.fillStyle = '#5b7b5e';
+    ctx.fillRect(lx, ly - 8, 18, 3);
+    ctx.fillStyle = '#5c5c5c';
+    ctx.textAlign = 'left';
+    ctx.fillText('客观分', lx + 24, ly - 2);
+
+    ctx.setLineDash([3, 3]);
+    ctx.beginPath();
+    ctx.moveTo(lx + 100, ly - 6);
+    ctx.lineTo(lx + 118, ly - 6);
+    ctx.strokeStyle = '#b8956a';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillText('主观分', lx + 124, ly - 2);
+  }
+
+  // ── Rendering ────────────────────────────────────────
+  function renderLanding() {
+    currentScreen = 'landing';
+    var app = getContainer();
+    app.innerHTML =
+      '<div class="ab-landing fade-in">' +
+        '<div class="icon">🔍</div>' +
+        '<h1>丰盈体检</h1>' +
+        '<div class="desc">这不是心理测试。</div>' +
+        '<div class="desc">15 分钟，看清你已经拥有但忘了的东西。</div>' +
+        '<div class="meta">18 道选择题 · 不收集数据 · 用完即走</div>' +
+        '<button class="ab-btn ab-btn-primary" onclick="window.abundanceApp.startQuiz()">开始</button>' +
+      '</div>';
+  }
+
+  function startQuiz() {
+    answers = [];
+    currentQ = 0;
+    renderQuestion();
+  }
+
+  function renderQuestion() {
+    currentScreen = 'question';
+    var q = questions[currentQ];
+    var dimNames = ['', '物质与能力', '关系与连接', '经历与验证'];
+
+    if (currentQ === 0 || currentQ === 6 || currentQ === 12) {
+      var dimNum = Math.floor(currentQ / 6) + 1;
+      var app = getContainer();
+      app.innerHTML =
+        '<div class="section-break fade-in">' +
+          '<div class="section-label">第 ' + dimNum + ' 部分</div>' +
+          '<h2>' + dimNames[dimNum] + '</h2>' +
+          '<button class="ab-btn ab-btn-primary" onclick="window.abundanceApp.continueSection()" style="width:auto;padding:12px 36px;font-size:15px;">继续</button>' +
+        '</div>';
+      return;
+    }
+
+    var progress = Math.round(currentQ / 18 * 100);
+    var app = getContainer();
+
+    app.innerHTML =
+      '<div class="progress-wrap fade-in">' +
+        '<div class="progress-bar"><div class="progress-fill" style="width:' + progress + '%"></div></div>' +
+        '<div class="progress-text">第 ' + (currentQ + 1) + ' / 18 题</div>' +
+      '</div>' +
+      '<div class="ab-card fade-in">' +
+        '<div class="q-num">Q' + q.id + ' · ' + dimNames[q.dim] + '</div>' +
+        '<div class="q-text">' + q.q + '</div>' +
+        q.options.map(function(o, i) {
+          return '<button class="option" onclick="window.abundanceApp.selectAnswer(' + currentQ + ',' + i + ')"><span class="option-label">' + 'ABCDE'[i] + '.</span>' + o.t + '</button>';
+        }).join('') +
+      '</div>';
+  }
+
+  function continueSection() {
+    renderQuestion();
+  }
+
+  function selectAnswer(qIdx, optIdx) {
+    var q = questions[qIdx];
+    var score = q.options[optIdx].s;
+    answers.push({ qIdx: qIdx, score: score });
+    currentQ++;
+
+    // Highlight selected
+    var app = getContainer();
+    var opts = app.querySelectorAll('.option');
+    opts.forEach(function(o) { o.classList.remove('selected'); });
+    if (opts[optIdx]) opts[optIdx].classList.add('selected');
+
+    if (currentQ >= 18) {
+      setTimeout(renderGenerating, 300);
+    } else {
+      setTimeout(renderQuestion, 400);
+    }
+  }
+
+  function renderGenerating() {
+    currentScreen = 'generating';
+    var app = getContainer();
+    app.innerHTML =
+      '<div class="generating fade-in">' +
+        '<div class="gen-icon">✨</div>' +
+        '<div class="gen-text">正在整理你的丰盈地图…</div>' +
+      '</div>';
+    setTimeout(renderResults, 2500);
+  }
+
+  function renderResults() {
+    currentScreen = 'results';
+    var result = calcScores();
+    var dims = result.dimensions;
+
+    var bestDim = 1, bestScore = 0;
+    var blindDim = null;
+    [1, 2, 3].forEach(function(d) {
+      var avg = (dims[d].obj + dims[d].sub) / 2;
+      if (avg > bestScore) { bestScore = avg; bestDim = d; }
+      if (dims[d].type === 'blindspot' && !blindDim) blindDim = d;
+    });
+
+    var ownedItems = getOwnedItems(answers, dims);
+    var app = getContainer();
+
+    var html =
+      '<div class="result-header fade-in">' +
+        '<div class="index-num">' + result.index + '</div>' +
+        '<div class="index-label">你的丰盈指数</div>' +
+        '<div class="index-desc">' + getIndexDesc(result.index) + '</div>' +
+      '</div>' +
+      '<div class="radar-wrap fade-in">' +
+        '<canvas id="radarCanvas"></canvas>' +
+        '<div style="font-size:11px;color:var(--text3);margin-top:4px;">实线 = 客观分 · 虚线 = 主观分</div>' +
+      '</div>';
+
+    html +=
+      '<div class="ab-card fade-in" style="margin-top:16px">' +
+        '<div class="section-title"><span class="s-dot"></span>你最稳固的丰盈来源：' + getDimName(bestDim) + '</div>' +
+        '<div class="result-text">' + getConfirmedText(bestDim) + '</div>' +
+      '</div>';
+
+    if (blindDim) {
+      html +=
+      '<div class="ab-card fade-in">' +
+        '<div class="section-title"><span class="s-dot" style="background:var(--accent2)"></span>你可能低估了：' + getDimName(blindDim) + '</div>' +
+        '<div class="blindspot-box">' +
+          '<div class="bs-label">🪞 盲区发现</div>' +
+          '<div class="bs-text">' + getBlindspotText(blindDim) + '</div>' +
+        '</div>' +
+        '<div class="result-text mt-12">' +
+          '客观分 <strong style="color:var(--accent)">' + dims[blindDim].obj + '</strong> · 主观分 <strong style="color:var(--accent2)">' + dims[blindDim].sub + '</strong>' +
+          '<span style="font-size:12px;color:var(--text3);margin-left:4px;">（差距 ' + (dims[blindDim].obj - dims[blindDim].sub) + ' 分）</span>' +
+        '</div>' +
+      '</div>';
+    }
+
+    html +=
+      '<div class="ab-card fade-in">' +
+        '<div class="section-title"><span class="s-dot"></span>你已经拥有的</div>' +
+        '<ul class="owned-list">' + ownedItems.map(function(item) { return '<li>' + item + '</li>'; }).join('') + '</ul>' +
+      '</div>';
+
+    html +=
+      '<div class="share-area fade-in">' +
+        '<div id="shareCard">' +
+          '<div style="font-size:13px;color:var(--accent2);margin-bottom:4px;">丰盈体检</div>' +
+          '<div class="sc-index">' + result.index + '</div>' +
+          '<div class="sc-label">丰盈指数</div>' +
+          '<div class="sc-top">✦ 最强维度：' + getDimName(bestDim) + '</div>' +
+          (blindDim ? '<div class="sc-blind">🪞 盲区：' + getDimName(blindDim) + ' — 你有但你没意识到</div>' : '') +
+          '<div class="sc-footer">测测你的丰盈指数</div>' +
+        '</div>' +
+        '<button class="ab-btn ab-btn-outline" onclick="window.abundanceApp.shareResult()" style="width:auto;padding:10px 24px;font-size:14px;">📋 复制分享文案</button>' +
+        '<button class="ab-btn ab-btn-outline" onclick="window.abundanceApp.restartQuiz()" style="width:auto;padding:10px 24px;font-size:14px;margin-top:8px;">🔄 重新测试</button>' +
+      '</div>';
+
+    app.innerHTML = html;
+
+    setTimeout(function() {
+      var canvas = document.getElementById('radarCanvas');
+      if (canvas) drawRadar(canvas, dims);
+    }, 100);
+  }
+
+  function shareResult() {
+    var result = calcScores();
+    var dims = result.dimensions;
+    var bestDim = 1, bestScore = 0, blindDim = null;
+    [1, 2, 3].forEach(function(d) {
+      var avg = (dims[d].obj + dims[d].sub) / 2;
+      if (avg > bestScore) { bestScore = avg; bestDim = d; }
+      if (dims[d].type === 'blindspot' && !blindDim) blindDim = d;
+    });
+
+    var text = '🔍 我的丰盈指数：' + result.index + '\n\n';
+    text += '✨ 最强维度：' + getDimName(bestDim) + '\n';
+    if (blindDim) text += '🪞 盲区发现：' + getDimName(blindDim) + ' — 我可能低估了这一块\n';
+    text += '\n测测你的 → ' + window.location.href;
+
+    navigator.clipboard.writeText(text).then(function() {
+      var btn = getContainer().querySelector('.ab-btn-outline');
+      if (btn) { btn.textContent = '✅ 已复制'; setTimeout(function() { btn.textContent = '📋 复制分享文案'; }, 2000); }
+    }).catch(function() { alert('复制失败，请手动复制'); });
+  }
+
+  function restartQuiz() {
+    answers = [];
+    currentQ = 0;
+    renderLanding();
+    window.scrollTo(0, 0);
+  }
+
+  // ── Init ─────────────────────────────────────────────
+  function init() {
+    renderLanding();
+  }
+
+  // ── Public API ───────────────────────────────────────
+  return {
+    init: init,
+    startQuiz: startQuiz,
+    continueSection: continueSection,
+    selectAnswer: selectAnswer,
+    shareResult: shareResult,
+    restartQuiz: restartQuiz
+  };
+})();
+
+
+// ═══════════════════════════════════════════════════════
+//  LANDING PAGE NAVIGATION
+// ═══════════════════════════════════════════════════════
+function showLanding() {
+  document.getElementById('landingPage').classList.remove('hidden');
+  document.getElementById('manifestApp').classList.add('hidden');
+  document.getElementById('abundanceApp').classList.add('hidden');
+  window.scrollTo(0, 0);
 }
 
-function submitMirror() {
-  const input = document.getElementById('mirrorInput');
-  const answer = input.value.trim();
-  if (!answer) return;
-  
-  state.days[todayKey].mirrorAnswer = answer;
-  saveState(state);
-  
-  document.getElementById('mirrorCard').classList.add('hidden');
-  document.getElementById('mirrorDoneCard').classList.remove('hidden');
-  
-  showToast('已回应 🪞');
+function showManifest() {
+  document.getElementById('landingPage').classList.add('hidden');
+  document.getElementById('manifestApp').classList.remove('hidden');
+  document.getElementById('abundanceApp').classList.add('hidden');
+  window.scrollTo(0, 0);
+  // Re-init every time to reflect latest localStorage
+  window.manifestApp.init();
 }
 
-function showToast(msg) {
-  const toast = document.getElementById('toast');
-  toast.textContent = msg;
-  toast.classList.add('show');
-  setTimeout(() => toast.classList.remove('show'), 2000);
+function showAbundance() {
+  document.getElementById('landingPage').classList.add('hidden');
+  document.getElementById('manifestApp').classList.add('hidden');
+  document.getElementById('abundanceApp').classList.remove('hidden');
+  window.scrollTo(0, 0);
+  window.abundanceApp.init();
 }
-
-// ── Init ───────────────────────────────────────────────
-renderToday();
 </script>
 </body>
 </html>
