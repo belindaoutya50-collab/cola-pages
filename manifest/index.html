@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
@@ -497,7 +497,7 @@ body {
 
 .app-abundance .owned-list { list-style: none; }
 .app-abundance .owned-list li { padding: 10px 0 10px 24px; position: relative; font-size: 14px; color: var(--text2); line-height: 1.6; }
-.app-abundance .owned-list li::before { content: '📍'; position: absolute; left: 0; top: 10px; }
+.app-abundance .owned-list li::before { content: '\0001F4CD'; position: absolute; left: 0; top: 10px; }
 
 .app-abundance .share-area { text-align: center; padding: 24px 0; }
 .app-abundance #shareCard { background: var(--card); border-radius: var(--radius); padding: 32px 24px; box-shadow: 0 2px 16px rgba(0,0,0,.06); border: 1px solid var(--border); text-align: center; margin-bottom: 16px; }
@@ -523,23 +523,23 @@ body {
 <div id="landingPage">
   <div class="container">
     <div class="landing-wrap">
-      <div class="landing-icon">📋</div>
+      <div class="landing-icon">&#x1F4CB;</div>
       <h1>显化清单 &amp; 丰盈体检</h1>
       <div class="landing-sub">先看见已有的，再盘点你的丰盈</div>
-      <button onclick="alert('JS works!')" style="margin-top:12px;padding:6px 16px;border:1px solid #ccc;border-radius:6px;background:#fff;font-size:12px;cursor:pointer;">🔧 测试按钮</button>
+      <button onclick="alert('JS works!')" style="margin-top:12px;padding:6px 16px;border:1px solid #ccc;border-radius:6px;background:#fff;font-size:12px;cursor:pointer;">&#x1F527; 测试按钮</button>
 
       <div class="landing-cards">
         <div class="landing-card manifest-card" onclick="showManifest()">
-          <div class="lc-icon">🪞</div>
+          <div class="lc-icon">&#x1FA9E;</div>
           <div class="lc-title">每日显化</div>
           <div class="lc-desc">7 天，每天一个问题。<br>不教你怎么吸引，帮你看见已有的。</div>
-          <span class="lc-accent">进入 →</span>
+          <span class="lc-accent">进入 &#8594;</span>
         </div>
         <div class="landing-card abundance-card" onclick="showAbundance()">
-          <div class="lc-icon">🔍</div>
+          <div class="lc-icon">&#x1F50D;</div>
           <div class="lc-title">丰盈体检</div>
-          <div class="lc-desc">18 道选择题 · 15 分钟。<br>看清你已经拥有但忘了的东西。</div>
-          <span class="lc-accent">进入 →</span>
+          <div class="lc-desc">18 道选择题 &#183; 15 分钟。<br>看清你已经拥有但忘了的东西。</div>
+          <span class="lc-accent">进入 &#8594;</span>
         </div>
       </div>
     </div>
@@ -549,7 +549,7 @@ body {
 <!-- ═══════════════ MANIFEST APP ═══════════════ -->
 <div id="manifestApp" class="app-manifest hidden">
   <div class="container">
-    <button class="back-btn" onclick="showLanding()">← 返回首页</button>
+    <button class="back-btn" onclick="showLanding()">&#8592; 返回首页</button>
 
     <div class="header">
       <h1>显化清单</h1>
@@ -589,7 +589,7 @@ body {
 
       <div class="card hidden" id="manifestDoneCard">
         <div style="text-align:center;color:var(--success);font-size:15px;padding:12px 0;">
-          ✓ 今天的回答已记录
+          &#10003; 今天的回答已记录
         </div>
         <div style="text-align:center;margin-top:8px">
           <button class="btn btn-secondary" onclick="window.manifestApp.switchTab('history')" style="width:auto;padding:8px 20px;font-size:13px;">查看回顾</button>
@@ -597,7 +597,7 @@ body {
       </div>
 
       <div class="card mirror-card hidden" id="manifestMirrorCard">
-        <div class="mirror-label">🪞 追问</div>
+        <div class="mirror-label">&#x1FA9E; 追问</div>
         <div class="mirror-text" id="manifestMirrorText"></div>
         <div class="answer-area" style="margin-top:12px">
           <textarea id="manifestMirrorInput" placeholder="…" rows="2"></textarea>
@@ -609,7 +609,7 @@ body {
 
       <div class="card hidden" id="manifestMirrorDoneCard">
         <div style="text-align:center;color:var(--success);font-size:14px;padding:8px 0;">
-          ✓ 已回应
+          &#10003; 已回应
         </div>
       </div>
     </div>
@@ -627,7 +627,7 @@ body {
     <div id="manifestManifestTab" class="hidden">
       <div class="card" id="manifestManifestContent">
         <div style="text-align:center;color:var(--text-muted);padding:20px;" id="manifestLocked">
-          <div style="font-size:40px;margin-bottom:12px;">🔒</div>
+          <div style="font-size:40px;margin-bottom:12px;">&#x1F512;</div>
           <div>需要记录 <strong>7</strong> 天才能解锁显化清单</div>
           <div class="lock-badge" style="justify-content:center;margin-top:12px;">
             目前已记录 <span id="manifestProgressDays">0</span> / 7 天
@@ -642,14 +642,14 @@ body {
       </div>
     </div>
 
-    <div class="footer">不教你怎么吸引 · 帮你看见已有的</div>
+    <div class="footer">不教你怎么吸引 &#183; 帮你看见已有的</div>
   </div>
 </div>
 
 <!-- ═══════════════ ABUNDANCE APP ═══════════════ -->
 <div id="abundanceApp" class="app-abundance hidden">
   <div class="container">
-    <button class="back-btn" onclick="showLanding()">← 返回首页</button>
+    <button class="back-btn" onclick="showLanding()">&#8592; 返回首页</button>
     <div id="abundanceContainer"></div>
   </div>
 </div>
@@ -658,14 +658,44 @@ body {
 <div class="toast" id="toast"></div>
 
 <script>
-// ═══════════════════════════════════════════════════════
-//  MANIFEST APP SCOPE
-// ═══════════════════════════════════════════════════════
+/* ═══════════════════════════════════════════════════════
+   LANDING PAGE NAVIGATION (must be first)
+   ═══════════════════════════════════════════════════════ */
+function showLanding() {
+  document.getElementById('landingPage').classList.remove('hidden');
+  document.getElementById('manifestApp').classList.add('hidden');
+  document.getElementById('abundanceApp').classList.add('hidden');
+  window.scrollTo(0, 0);
+}
+
+function showManifest() {
+  try {
+    document.getElementById('landingPage').classList.add('hidden');
+    document.getElementById('manifestApp').classList.remove('hidden');
+    document.getElementById('abundanceApp').classList.add('hidden');
+    window.scrollTo(0, 0);
+    if (window.manifestApp && window.manifestApp.init) window.manifestApp.init();
+  } catch(e) { console.error('showManifest error:', e); }
+}
+
+function showAbundance() {
+  try {
+    document.getElementById('landingPage').classList.add('hidden');
+    document.getElementById('manifestApp').classList.add('hidden');
+    document.getElementById('abundanceApp').classList.remove('hidden');
+    window.scrollTo(0, 0);
+    if (window.abundanceApp && window.abundanceApp.init) window.abundanceApp.init();
+  } catch(e) { console.error('showAbundance error:', e); }
+}
+
+/* ═══════════════════════════════════════════════════════
+   MANIFEST APP SCOPE
+   ═══════════════════════════════════════════════════════ */
 window.manifestApp = (function() {
   'use strict';
 
-  // ── Questions ────────────────────────────────────────
-  const questions = [
+  /* ── Questions ──────────────────────────────────────── */
+  var questions = [
     {
       q: "你现在住的这个房间里，有哪件东西是你一年前还没有的？它出现在你的生活里，是因为你做对了什么？",
       hint: "不用很大，可以是一本书、一盏灯、一个习惯。"
@@ -724,18 +754,17 @@ window.manifestApp = (function() {
     }
   ];
 
-  // ── State ────────────────────────────────────────────
-  const STORAGE_KEY = 'manifest_app_state';
-  const TODAY_KEY_PREFIX = 'manifest_day_';
-
-  let state;
-  let dayIndex;
-  let todayKey;
-  let todayData;
+  /* ── State ──────────────────────────────────────────── */
+  var STORAGE_KEY = 'manifest_app_state';
+  var TODAY_KEY_PREFIX = 'manifest_day_';
+  var state;
+  var dayIndex;
+  var todayKey;
+  var todayData;
 
   function loadState() {
     try {
-      const raw = localStorage.getItem(STORAGE_KEY);
+      var raw = localStorage.getItem(STORAGE_KEY);
       return raw ? JSON.parse(raw) : { startDate: null, days: {} };
     } catch(e) { return { startDate: null, days: {} }; }
   }
@@ -745,42 +774,42 @@ window.manifestApp = (function() {
   }
 
   function getTodayKey() {
-    const d = new Date();
-    return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+    var d = new Date();
+    return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
   }
 
   function getDayIndex(st) {
     if (!st.startDate) return 1;
-    const start = new Date(st.startDate);
-    const today = new Date(getTodayKey());
-    const diff = Math.floor((today - start) / (1000*60*60*24));
+    var start = new Date(st.startDate);
+    var today = new Date(getTodayKey());
+    var diff = Math.floor((today - start) / (1000 * 60 * 60 * 24));
     return Math.max(1, Math.min(diff + 1, questions.length));
   }
 
   function getDayNumForDate(dateKey) {
     if (!state.startDate) return '?';
-    const start = new Date(state.startDate);
-    const d = new Date(dateKey);
-    const diff = Math.floor((d - start) / (1000*60*60*24));
+    var start = new Date(state.startDate);
+    var d = new Date(dateKey);
+    var diff = Math.floor((d - start) / (1000 * 60 * 60 * 24));
     return diff + 1;
   }
 
   function escapeHtml(str) {
-    const div = document.createElement('div');
+    var div = document.createElement('div');
     div.textContent = str;
     return div.innerHTML;
   }
 
   function extractKeyInsight(entry) {
-    const answer = entry.answer || '';
-    const sentences = answer.split(/[。！？\n]/).filter(function(s) { return s.trim().length > 5; });
+    var answer = entry.answer || '';
+    var sentences = answer.split(/[。！？\n]/).filter(function(s) { return s.trim().length > 5; });
     if (sentences.length > 0) {
       return sentences[0].trim().substring(0, 60) + (sentences[0].trim().length > 60 ? '…' : '');
     }
     return answer.substring(0, 60);
   }
 
-  // ── Render ───────────────────────────────────────────
+  /* ── Render ─────────────────────────────────────────── */
   function renderProgress() {
     var container = document.getElementById('manifestProgressDots');
     container.innerHTML = '';
@@ -805,7 +834,7 @@ window.manifestApp = (function() {
       document.getElementById('manifestAnswerArea').classList.add('hidden');
       document.getElementById('manifestDoneCard').classList.remove('hidden');
       var qLabel = document.getElementById('manifestQuestionCard').querySelector('.question-label');
-      if (qLabel) qLabel.textContent = '今天的问题 ✓';
+      if (qLabel) qLabel.textContent = '今天的问题 \u2713';
 
       if (todayData.mirrorAnswer) {
         document.getElementById('manifestMirrorCard').classList.add('hidden');
@@ -830,7 +859,6 @@ window.manifestApp = (function() {
       .filter(function(e) { return e[1].answered; })
       .sort(function(a, b) { return b[0].localeCompare(a[0]); });
 
-    // Remove old history items
     var oldItems = container.querySelectorAll('.history-item');
     oldItems.forEach(function(el) { el.remove(); });
 
@@ -846,12 +874,16 @@ window.manifestApp = (function() {
       var div = document.createElement('div');
       div.className = 'history-item';
       var dayNum = getDayNumForDate(dateKey);
-      div.innerHTML =
-        '<div class="history-day">第 ' + dayNum + ' 天 · ' + dateKey + '</div>' +
-        '<div class="history-q">' + escapeHtml(data.question || '') + '</div>' +
-        '<div class="history-a">' + escapeHtml(data.answer || '') + '</div>' +
-        (data.mirrorQuestion ? '<div style="margin-top:8px;font-size:13px;color:var(--accent);">🪞 ' + escapeHtml(data.mirrorQuestion) + '</div>' : '') +
-        (data.mirrorAnswer ? '<div class="history-a" style="margin-top:4px">' + escapeHtml(data.mirrorAnswer) + '</div>' : '');
+      var html = '<div class="history-day">第 ' + dayNum + ' 天 \u00b7 ' + dateKey + '</div>';
+      html += '<div class="history-q">' + escapeHtml(data.question || '') + '</div>';
+      html += '<div class="history-a">' + escapeHtml(data.answer || '') + '</div>';
+      if (data.mirrorQuestion) {
+        html += '<div style="margin-top:8px;font-size:13px;color:var(--accent);">\uD83E\uDE9E ' + escapeHtml(data.mirrorQuestion) + '</div>';
+      }
+      if (data.mirrorAnswer) {
+        html += '<div class="history-a" style="margin-top:4px">' + escapeHtml(data.mirrorAnswer) + '</div>';
+      }
+      div.innerHTML = html;
       container.appendChild(div);
     });
   }
@@ -899,7 +931,6 @@ window.manifestApp = (function() {
       }
     });
 
-    // Remove empty categories
     Object.keys(categories).forEach(function(key) {
       if (categories[key].length === 0) delete categories[key];
     });
@@ -913,7 +944,7 @@ window.manifestApp = (function() {
       var title = entry[0];
       var items = entry[1];
       return '<div class="manifest-group">' +
-        '<div class="manifest-group-title"><span>✦</span> ' + title + '</div>' +
+        '<div class="manifest-group-title"><span>\u2726</span> ' + title + '</div>' +
         items.map(function(item) {
           return '<div class="manifest-item">「' + escapeHtml(item.question || '') + '」<br><span style="color:var(--text);">' + extractKeyInsight(item) + '</span></div>';
         }).join('') +
@@ -921,7 +952,7 @@ window.manifestApp = (function() {
     }).join('');
   }
 
-  // ── AI Mirror ────────────────────────────────────────
+  /* ── AI Mirror ──────────────────────────────────────── */
   function generateMirrorQuestion(answer) {
     var a = answer.trim();
 
@@ -968,7 +999,7 @@ window.manifestApp = (function() {
     setTimeout(function() { toast.classList.remove('show'); }, 2000);
   }
 
-  // ── Tab switching ────────────────────────────────────
+  /* ── Tab switching ──────────────────────────────────── */
   function switchTab(tab) {
     var app = document.getElementById('manifestApp');
     var tabs = app.querySelectorAll('.tab');
@@ -984,7 +1015,7 @@ window.manifestApp = (function() {
     if (tab === 'manifest') renderManifest();
   }
 
-  // ── Actions ──────────────────────────────────────────
+  /* ── Actions ────────────────────────────────────────── */
   function submitAnswer() {
     var input = document.getElementById('manifestAnswerInput');
     var answer = input.value.trim();
@@ -1002,7 +1033,7 @@ window.manifestApp = (function() {
     document.getElementById('manifestAnswerArea').classList.add('hidden');
     document.getElementById('manifestDoneCard').classList.remove('hidden');
     var qLabel = document.getElementById('manifestQuestionCard').querySelector('.question-label');
-    if (qLabel) qLabel.textContent = '今天的问题 ✓';
+    if (qLabel) qLabel.textContent = '今天的问题 \u2713';
 
     setTimeout(function() {
       var mirrorQ = generateMirrorQuestion(answer);
@@ -1015,7 +1046,7 @@ window.manifestApp = (function() {
       document.getElementById('manifestMirrorInput').focus();
     }, 800);
 
-    showToast('已记录 ✨');
+    showToast('已记录 \u2728');
   }
 
   function submitMirror() {
@@ -1029,10 +1060,21 @@ window.manifestApp = (function() {
     document.getElementById('manifestMirrorCard').classList.add('hidden');
     document.getElementById('manifestMirrorDoneCard').classList.remove('hidden');
 
-    showToast('已回应 🪞');
+    showToast('已回应 \uD83E\uDE9E');
   }
 
-  // ── Init ─────────────────────────────────────────────
+  /* ── Tab bar event binding ──────────────────────────── */
+  function bindTabBar() {
+    var bar = document.getElementById('manifestTabBar');
+    if (bar) {
+      bar.addEventListener('click', function(e) {
+        var tab = e.target.closest('.tab');
+        if (tab) switchTab(tab.dataset.tab);
+      });
+    }
+  }
+
+  /* ── Init ───────────────────────────────────────────── */
   function init() {
     state = loadState();
     if (!state.startDate) {
@@ -1046,16 +1088,7 @@ window.manifestApp = (function() {
     bindTabBar();
   }
 
-  // ── Tab bar event ────────────────────────────────────
-  function bindTabBar() {
-    var bar = document.getElementById('manifestTabBar');
-    if (bar) bar.addEventListener('click', function(e) {
-      var tab = e.target.closest('.tab');
-      if (tab) switchTab(tab.dataset.tab);
-    });
-  }
-
-  // ── Public API ───────────────────────────────────────
+  /* ── Public API ─────────────────────────────────────── */
   return {
     init: init,
     submitAnswer: submitAnswer,
@@ -1064,14 +1097,13 @@ window.manifestApp = (function() {
   };
 })();
 
-
-// ═══════════════════════════════════════════════════════
-//  ABUNDANCE APP SCOPE
-// ═══════════════════════════════════════════════════════
+/* ═══════════════════════════════════════════════════════
+   ABUNDANCE APP SCOPE
+   ═══════════════════════════════════════════════════════ */
 window.abundanceApp = (function() {
   'use strict';
 
-  // ── Questions ────────────────────────────────────────
+  /* ── Questions ──────────────────────────────────────── */
   var questions = [
     { id: 1,  q: "过去一年，你学会了一项以前不会的东西。它属于？", dim: 1, type: "objective", options: [
       { t: "技术或工具类", s: 3 }, { t: "表达或创作类", s: 3 }, { t: "生活或实践类", s: 2 }, { t: "人际或管理类", s: 2 }, { t: "还没有学会什么新东西", s: 0 }
@@ -1092,15 +1124,15 @@ window.abundanceApp = (function() {
       { t: "比大多数人有优势", s: 3 }, { t: "中等偏上", s: 2 }, { t: "差不多平均水平", s: 1 }, { t: "不太有优势", s: 0 }
     ]},
     { id: 7,  q: "你手机里能半夜打电话求助的人有几个？", dim: 2, type: "objective", options: [
-      { t: "5 个以上", s: 3 }, { t: "3–5 个", s: 2 }, { t: "1–2 个", s: 1 }, { t: "没有", s: 0 }
+      { t: "5 个以上", s: 3 }, { t: "3\u20135 个", s: 2 }, { t: "1\u20132 个", s: 1 }, { t: "没有", s: 0 }
     ]},
     { id: 8,  q: "最近一个月内，主动联系你、问你近况的人（不算工作关系）有几个？", dim: 2, type: "objective", options: [
-      { t: "5 个以上", s: 3 }, { t: "3–5 个", s: 2 }, { t: "1–2 个", s: 1 }, { t: "没有", s: 0 }
+      { t: "5 个以上", s: 3 }, { t: "3\u20135 个", s: 2 }, { t: "1\u20132 个", s: 1 }, { t: "没有", s: 0 }
     ]},
     { id: 9,  q: "最近一次有人认真感谢你，是因为什么？", dim: 2, type: "objective", options: [
       { t: "帮了对方一个具体的忙", s: 2 }, { t: "长期的陪伴或支持", s: 3 }, { t: "给了对方重要的建议或启发", s: 3 }, { t: "记不太清了", s: 0 }
     ]},
-    { id: 10, q: "你觉得自己是一个"有人可以依靠"的人吗？", dim: 2, type: "subjective", options: [
+    { id: 10, q: "你觉得自己是一个\"有人可以依靠\"的人吗？", dim: 2, type: "subjective", options: [
       { t: "非常确定，不止一个人", s: 3 }, { t: "大多数时候是", s: 2 }, { t: "不太确定", s: 1 }, { t: "不是", s: 0 }
     ]},
     { id: 11, q: "你认识的人里，有没有谁的生活是你曾经羡慕过、但现在回头看发现自己其实也差不多拥有了的？", dim: 2, type: "subjective", options: [
@@ -1112,7 +1144,7 @@ window.abundanceApp = (function() {
     { id: 13, q: "一年前你最焦虑的那件事，现在回头看，实际发生了什么？", dim: 3, type: "objective", options: [
       { t: "完全没发生，白焦虑了", s: 3 }, { t: "发生了，但远没有想的那么糟", s: 3 }, { t: "发生了，但扛过来了", s: 2 }, { t: "确实发生了且影响很大", s: 0 }
     ]},
-    { id: 14, q: "你有没有一件"当初觉得绝对做不到、后来居然做到了"的事？", dim: 3, type: "objective", options: [
+    { id: 14, q: "你有没有一件\"当初觉得绝对做不到、后来居然做到了\"的事？", dim: 3, type: "objective", options: [
       { t: "不止一件，能说出两三件", s: 3 }, { t: "有一件很明确的", s: 2 }, { t: "可能有但不太确定", s: 1 }, { t: "没有", s: 0 }
     ]},
     { id: 15, q: "最近一次意外的正面结果（你没期待、但事情比预期好），发生在什么时候？", dim: 3, type: "objective", options: [
@@ -1121,7 +1153,7 @@ window.abundanceApp = (function() {
     { id: 16, q: "你觉得过去一年，自己是变好了还是变差了？", dim: 3, type: "subjective", options: [
       { t: "明显变好了", s: 3 }, { t: "有些方面变好了", s: 2 }, { t: "有好有坏，差不多", s: 1 }, { t: "变差了", s: 0 }
     ]},
-    { id: 17, q: "你觉得"我是个运气好的人"这句话，有几分符合你？", dim: 3, type: "subjective", options: [
+    { id: 17, q: "你觉得\"我是个运气好的人\"这句话，有几分符合你？", dim: 3, type: "subjective", options: [
       { t: "很符合，经历验证过", s: 3 }, { t: "有点符合，某些方面确实运气好", s: 2 }, { t: "不太符合，运气一般", s: 1 }, { t: "不符合，运气不太好", s: 0 }
     ]},
     { id: 18, q: "你觉得一年后的你回头看现在的你，会觉得现在担心的事里有多少是白担心的？", dim: 3, type: "subjective", options: [
@@ -1129,7 +1161,7 @@ window.abundanceApp = (function() {
     ]}
   ];
 
-  // ── State ────────────────────────────────────────────
+  /* ── State ──────────────────────────────────────────── */
   var answers = [];
   var currentQ = 0;
   var currentScreen = 'landing';
@@ -1138,7 +1170,7 @@ window.abundanceApp = (function() {
     return document.getElementById('abundanceContainer');
   }
 
-  // ── Scoring ─────────────────────────────────────────
+  /* ── Scoring ───────────────────────────────────────── */
   function calcScores() {
     var dims = {
       1: { obj: { total: 0, max: 0 }, sub: { total: 0, max: 0 } },
@@ -1186,16 +1218,16 @@ window.abundanceApp = (function() {
     var map = {
       1: "你的能力和物质基础是你最稳固的丰盈来源。你学会过新东西、拥有让你安心的物品、你的专业能力被验证过。这些不是运气——是你日积月累的结果。",
       2: "你身边的人是你最宝贵的资产。有人主动联系你、感谢过你、可以在深夜接你电话。这些连接不是理所当然的——是你经营和吸引来的。",
-      3: "你经历过的事给了你最大的底气。那些曾经让你焦虑的事大多没有按最坏的剧本发生，你做到过"以为做不到"的事。这些经历已经内化成了你的韧性。"
+      3: "你经历过的事给了你最大的底气。那些曾经让你焦虑的事大多没有按最坏的剧本发生，你做到过\"以为做不到\"的事。这些经历已经内化成了你的韧性。"
     };
     return map[dimNum] || '';
   }
 
   function getBlindspotText(dimNum) {
     var map = {
-      1: "你可能低估了自己的能力和资源。客观数据显示你拥有不少——但你对自己的评分偏低。有没有可能你已经把一个"正常水平"当成了"不够好"？试着换个参照系看看。",
-      2: "你的数据显示你不是一个人——有不止一个人会主动找你、感谢过你、可以依靠。但你对自己"有人可以依靠"的感知偏低。明明有，却不太当回事。你有没有在把"不想麻烦别人"和"没有人可以依靠"搞混？",
-      3: "你经历过的考验比你以为的多，但你可能没有把它们"归档"为你的能力。那些挺过来的时刻、那些没发生的灾难、那些意外的好结果——它们都是你的验证数据。别轻易忽略。"
+      1: "你可能低估了自己的能力和资源。客观数据显示你拥有不少——但你对自己的评分偏低。有没有可能你已经把一个\"正常水平\"当成了\"不够好\"？试着换个参照系看看。",
+      2: "你的数据显示你不是一个人——有不止一个人会主动找你、感谢过你、可以依靠。但你对自己\"有人可以依靠\"的感知偏低。明明有，却不太当回事。你有没有在把\"不想麻烦别人\"和\"没有人可以依靠\"搞混？",
+      3: "你经历过的考验比你以为的多，但你可能没有把它们\"归档\"为你的能力。那些挺过来的时刻、那些没发生的灾难、那些意外的好结果——它们都是你的验证数据。别轻易忽略。"
     };
     return map[dimNum] || '';
   }
@@ -1212,7 +1244,7 @@ window.abundanceApp = (function() {
     if (byId[7]  && byId[7].score  >= 2) items.push("最近有人主动关心过你的近况");
     if (byId[8]  && byId[8].score  >= 2) items.push("有人认真感谢过你——因为陪伴、支持或启发");
     if (byId[12] && byId[12].score >= 2) items.push("一年前让你焦虑的事，实际结果远没有那么糟");
-    if (byId[13] && byId[13].score >= 1) items.push("你做到过一件"曾经以为做不到"的事");
+    if (byId[13] && byId[13].score >= 1) items.push("你做到过一件\"曾经以为做不到\"的事");
     if (byId[14] && byId[14].score >= 2) items.push("最近一个月内遇到过意外的正面结果");
     if (byId[15] && byId[15].score >= 2) items.push("你觉得自己过去一年在变好");
 
@@ -1227,18 +1259,20 @@ window.abundanceApp = (function() {
     return items.slice(0, 5);
   }
 
-  // ── Radar Chart ──────────────────────────────────────
+  /* ── Radar Chart ────────────────────────────────────── */
   function drawRadar(canvas, dims) {
     var ctx = canvas.getContext('2d');
     var w = canvas.width = 320;
     var h = canvas.height = 320;
-    var cx = w / 2, cy = h / 2, r = 120;
+    var cx = w / 2;
+    var cy = h / 2;
+    var r = 120;
     var labels = ['物质与能力', '关系与连接', '经历与验证'];
     var angles = [-Math.PI / 2, Math.PI / 6, 5 * Math.PI / 6];
 
     ctx.clearRect(0, 0, w, h);
 
-    // Grid
+    /* Grid */
     for (var i = 1; i <= 5; i++) {
       ctx.beginPath();
       var rr = r * i / 5;
@@ -1246,7 +1280,8 @@ window.abundanceApp = (function() {
         var a = angles[j];
         var x = cx + rr * Math.cos(a);
         var y = cy + rr * Math.sin(a);
-        j === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+        if (j === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
       }
       ctx.closePath();
       ctx.strokeStyle = '#e8e4dd';
@@ -1254,7 +1289,7 @@ window.abundanceApp = (function() {
       ctx.stroke();
     }
 
-    // Axes
+    /* Axes */
     angles.forEach(function(a) {
       ctx.beginPath();
       ctx.moveTo(cx, cy);
@@ -1263,7 +1298,7 @@ window.abundanceApp = (function() {
       ctx.stroke();
     });
 
-    // Labels
+    /* Labels */
     ctx.fillStyle = '#5c5c5c';
     ctx.font = '13px -apple-system, "PingFang SC", sans-serif';
     ctx.textAlign = 'center';
@@ -1274,7 +1309,7 @@ window.abundanceApp = (function() {
       ctx.fillText(labels[i], x, y + 5);
     });
 
-    // Data polygon helper
+    /* Data polygon helper */
     function drawPolygon(values, color, dashed, alpha) {
       ctx.beginPath();
       for (var i = 0; i < 3; i++) {
@@ -1282,10 +1317,12 @@ window.abundanceApp = (function() {
         var rr = r * val;
         var x = cx + rr * Math.cos(angles[i]);
         var y = cy + rr * Math.sin(angles[i]);
-        i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
       }
       ctx.closePath();
-      if (dashed) ctx.setLineDash([4, 4]); else ctx.setLineDash([]);
+      if (dashed) ctx.setLineDash([4, 4]);
+      else ctx.setLineDash([]);
       ctx.strokeStyle = color;
       ctx.lineWidth = 2.5;
       ctx.stroke();
@@ -1307,9 +1344,10 @@ window.abundanceApp = (function() {
     drawPolygon(subVals, '#b8956a', true, 0.1);
     drawPolygon(objVals, '#5b7b5e', false, 0.15);
 
-    // Legend
+    /* Legend */
     ctx.font = '11px -apple-system, "PingFang SC", sans-serif';
-    var lx = 20, ly = h - 30;
+    var lx = 20;
+    var ly = h - 30;
     ctx.fillStyle = '#5b7b5e';
     ctx.fillRect(lx, ly - 8, 18, 3);
     ctx.fillStyle = '#5c5c5c';
@@ -1327,17 +1365,17 @@ window.abundanceApp = (function() {
     ctx.fillText('主观分', lx + 124, ly - 2);
   }
 
-  // ── Rendering ────────────────────────────────────────
+  /* ── Rendering ──────────────────────────────────────── */
   function renderLanding() {
     currentScreen = 'landing';
     var app = getContainer();
     app.innerHTML =
       '<div class="ab-landing fade-in">' +
-        '<div class="icon">🔍</div>' +
+        '<div class="icon">\uD83D\uDD0D</div>' +
         '<h1>丰盈体检</h1>' +
         '<div class="desc">这不是心理测试。</div>' +
         '<div class="desc">15 分钟，看清你已经拥有但忘了的东西。</div>' +
-        '<div class="meta">18 道选择题 · 不收集数据 · 用完即走</div>' +
+        '<div class="meta">18 道选择题 \u00b7 不收集数据 \u00b7 用完即走</div>' +
         '<button class="ab-btn ab-btn-primary" onclick="window.abundanceApp.startQuiz()">开始</button>' +
       '</div>';
   }
@@ -1374,7 +1412,7 @@ window.abundanceApp = (function() {
         '<div class="progress-text">第 ' + (currentQ + 1) + ' / 18 题</div>' +
       '</div>' +
       '<div class="ab-card fade-in">' +
-        '<div class="q-num">Q' + q.id + ' · ' + dimNames[q.dim] + '</div>' +
+        '<div class="q-num">Q' + q.id + ' \u00b7 ' + dimNames[q.dim] + '</div>' +
         '<div class="q-text">' + q.q + '</div>' +
         q.options.map(function(o, i) {
           return '<button class="option" onclick="window.abundanceApp.selectAnswer(' + currentQ + ',' + i + ')"><span class="option-label">' + 'ABCDE'[i] + '.</span>' + o.t + '</button>';
@@ -1392,7 +1430,6 @@ window.abundanceApp = (function() {
     answers.push({ qIdx: qIdx, score: score });
     currentQ++;
 
-    // Highlight selected
     var app = getContainer();
     var opts = app.querySelectorAll('.option');
     opts.forEach(function(o) { o.classList.remove('selected'); });
@@ -1410,8 +1447,8 @@ window.abundanceApp = (function() {
     var app = getContainer();
     app.innerHTML =
       '<div class="generating fade-in">' +
-        '<div class="gen-icon">✨</div>' +
-        '<div class="gen-text">正在整理你的丰盈地图…</div>' +
+        '<div class="gen-icon">\u2728</div>' +
+        '<div class="gen-text">正在整理你的丰盈地图\u2026</div>' +
       '</div>';
     setTimeout(renderResults, 2500);
   }
@@ -1421,7 +1458,8 @@ window.abundanceApp = (function() {
     var result = calcScores();
     var dims = result.dimensions;
 
-    var bestDim = 1, bestScore = 0;
+    var bestDim = 1;
+    var bestScore = 0;
     var blindDim = null;
     [1, 2, 3].forEach(function(d) {
       var avg = (dims[d].obj + dims[d].sub) / 2;
@@ -1440,7 +1478,7 @@ window.abundanceApp = (function() {
       '</div>' +
       '<div class="radar-wrap fade-in">' +
         '<canvas id="radarCanvas"></canvas>' +
-        '<div style="font-size:11px;color:var(--text3);margin-top:4px;">实线 = 客观分 · 虚线 = 主观分</div>' +
+        '<div style="font-size:11px;color:var(--text3);margin-top:4px;">实线 = 客观分 \u00b7 虚线 = 主观分</div>' +
       '</div>';
 
     html +=
@@ -1454,11 +1492,11 @@ window.abundanceApp = (function() {
       '<div class="ab-card fade-in">' +
         '<div class="section-title"><span class="s-dot" style="background:var(--accent2)"></span>你可能低估了：' + getDimName(blindDim) + '</div>' +
         '<div class="blindspot-box">' +
-          '<div class="bs-label">🪞 盲区发现</div>' +
+          '<div class="bs-label">\uD83E\uDE9E 盲区发现</div>' +
           '<div class="bs-text">' + getBlindspotText(blindDim) + '</div>' +
         '</div>' +
         '<div class="result-text mt-12">' +
-          '客观分 <strong style="color:var(--accent)">' + dims[blindDim].obj + '</strong> · 主观分 <strong style="color:var(--accent2)">' + dims[blindDim].sub + '</strong>' +
+          '客观分 <strong style="color:var(--accent)">' + dims[blindDim].obj + '</strong> \u00b7 主观分 <strong style="color:var(--accent2)">' + dims[blindDim].sub + '</strong>' +
           '<span style="font-size:12px;color:var(--text3);margin-left:4px;">（差距 ' + (dims[blindDim].obj - dims[blindDim].sub) + ' 分）</span>' +
         '</div>' +
       '</div>';
@@ -1476,12 +1514,12 @@ window.abundanceApp = (function() {
           '<div style="font-size:13px;color:var(--accent2);margin-bottom:4px;">丰盈体检</div>' +
           '<div class="sc-index">' + result.index + '</div>' +
           '<div class="sc-label">丰盈指数</div>' +
-          '<div class="sc-top">✦ 最强维度：' + getDimName(bestDim) + '</div>' +
-          (blindDim ? '<div class="sc-blind">🪞 盲区：' + getDimName(blindDim) + ' — 你有但你没意识到</div>' : '') +
+          '<div class="sc-top">\u2726 最强维度：' + getDimName(bestDim) + '</div>' +
+          (blindDim ? '<div class="sc-blind">\uD83E\uDE9E 盲区：' + getDimName(blindDim) + ' — 你有但你没意识到</div>' : '') +
           '<div class="sc-footer">测测你的丰盈指数</div>' +
         '</div>' +
-        '<button class="ab-btn ab-btn-outline" onclick="window.abundanceApp.shareResult()" style="width:auto;padding:10px 24px;font-size:14px;">📋 复制分享文案</button>' +
-        '<button class="ab-btn ab-btn-outline" onclick="window.abundanceApp.restartQuiz()" style="width:auto;padding:10px 24px;font-size:14px;margin-top:8px;">🔄 重新测试</button>' +
+        '<button class="ab-btn ab-btn-outline" onclick="window.abundanceApp.shareResult()" style="width:auto;padding:10px 24px;font-size:14px;">\uD83D\uDCCB 复制分享文案</button>' +
+        '<button class="ab-btn ab-btn-outline" onclick="window.abundanceApp.restartQuiz()" style="width:auto;padding:10px 24px;font-size:14px;margin-top:8px;">\uD83D\uDD04 重新测试</button>' +
       '</div>';
 
     app.innerHTML = html;
@@ -1495,22 +1533,29 @@ window.abundanceApp = (function() {
   function shareResult() {
     var result = calcScores();
     var dims = result.dimensions;
-    var bestDim = 1, bestScore = 0, blindDim = null;
+    var bestDim = 1;
+    var bestScore = 0;
+    var blindDim = null;
     [1, 2, 3].forEach(function(d) {
       var avg = (dims[d].obj + dims[d].sub) / 2;
       if (avg > bestScore) { bestScore = avg; bestDim = d; }
       if (dims[d].type === 'blindspot' && !blindDim) blindDim = d;
     });
 
-    var text = '🔍 我的丰盈指数：' + result.index + '\n\n';
-    text += '✨ 最强维度：' + getDimName(bestDim) + '\n';
-    if (blindDim) text += '🪞 盲区发现：' + getDimName(blindDim) + ' — 我可能低估了这一块\n';
-    text += '\n测测你的 → ' + window.location.href;
+    var text = '\uD83D\uDD0D 我的丰盈指数：' + result.index + '\n\n';
+    text += '\u2728 最强维度：' + getDimName(bestDim) + '\n';
+    if (blindDim) text += '\uD83E\uDE9E 盲区发现：' + getDimName(blindDim) + ' — 我可能低估了这一块\n';
+    text += '\n测测你的 \u2192 ' + window.location.href;
 
     navigator.clipboard.writeText(text).then(function() {
       var btn = getContainer().querySelector('.ab-btn-outline');
-      if (btn) { btn.textContent = '✅ 已复制'; setTimeout(function() { btn.textContent = '📋 复制分享文案'; }, 2000); }
-    }).catch(function() { alert('复制失败，请手动复制'); });
+      if (btn) {
+        btn.textContent = '\u2705 已复制';
+        setTimeout(function() { btn.textContent = '\uD83D\uDCCB 复制分享文案'; }, 2000);
+      }
+    }).catch(function() {
+      alert('复制失败，请手动复制');
+    });
   }
 
   function restartQuiz() {
@@ -1520,12 +1565,12 @@ window.abundanceApp = (function() {
     window.scrollTo(0, 0);
   }
 
-  // ── Init ─────────────────────────────────────────────
+  /* ── Init ───────────────────────────────────────────── */
   function init() {
     renderLanding();
   }
 
-  // ── Public API ───────────────────────────────────────
+  /* ── Public API ─────────────────────────────────────── */
   return {
     init: init,
     startQuiz: startQuiz,
@@ -1535,37 +1580,6 @@ window.abundanceApp = (function() {
     restartQuiz: restartQuiz
   };
 })();
-
-
-// ═══════════════════════════════════════════════════════
-//  LANDING PAGE NAVIGATION
-// ═══════════════════════════════════════════════════════
-function showLanding() {
-  document.getElementById('landingPage').classList.remove('hidden');
-  document.getElementById('manifestApp').classList.add('hidden');
-  document.getElementById('abundanceApp').classList.add('hidden');
-  window.scrollTo(0, 0);
-}
-
-function showManifest() {
-  try {
-    document.getElementById('landingPage').classList.add('hidden');
-    document.getElementById('manifestApp').classList.remove('hidden');
-    document.getElementById('abundanceApp').classList.add('hidden');
-    window.scrollTo(0, 0);
-    if (window.manifestApp && window.manifestApp.init) window.manifestApp.init();
-  } catch(e) { console.error('showManifest error:', e); }
-}
-
-function showAbundance() {
-  try {
-    document.getElementById('landingPage').classList.add('hidden');
-    document.getElementById('manifestApp').classList.add('hidden');
-    document.getElementById('abundanceApp').classList.remove('hidden');
-    window.scrollTo(0, 0);
-    if (window.abundanceApp && window.abundanceApp.init) window.abundanceApp.init();
-  } catch(e) { console.error('showAbundance error:', e); }
-}
 </script>
 </body>
 </html>
