@@ -1386,12 +1386,12 @@ window.abundanceApp = (function() {
     renderQuestion();
   }
 
-  function renderQuestion() {
+  function renderQuestion(skipBreak) {
     currentScreen = 'question';
     var q = questions[currentQ];
     var dimNames = ['', '物质与能力', '关系与连接', '经历与验证'];
 
-    if (currentQ === 0 || currentQ === 6 || currentQ === 12) {
+    if (!skipBreak && (currentQ === 0 || currentQ === 6 || currentQ === 12)) {
       var dimNum = Math.floor(currentQ / 6) + 1;
       var app = getContainer();
       app.innerHTML =
@@ -1421,7 +1421,7 @@ window.abundanceApp = (function() {
   }
 
   function continueSection() {
-    renderQuestion();
+    renderQuestion(true);
   }
 
   function selectAnswer(qIdx, optIdx) {
