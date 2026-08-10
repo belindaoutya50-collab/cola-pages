@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>显化清单</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  
+  :root {
+    --bg: #faf8f5;
+    --card: #ffffff;
+    --text: #2c2c2c;
+    --text-secondary: #6b6b6b;
+    --text-muted: #9a9a9a;
+    --accent: #b8956a;
+    --accent-light: #e8d5b5;
+    --border: #e8e4dd;
+    --success: #7a9e7e;
+    --radius: 12px;
+    --shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03);
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    min-height: 100dvh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 24px 16px 40px;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    padding: 32px 0 20px;
+  }
+  .header h1 {
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--accent);
+    letter-spacing: 0.5px;
+  }
+  .header .subtitle {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-top: 6px;
+  }
+
+  /* Day Badge */
+  .day-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--accent-light);
+    color: var(--accent);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 20px;
+  }
+  .day-badge .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+
+  /* Progress dots */
+  .progress-dots {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin-bottom: 28px;
+  }
+  .progress-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--border);
+    transition: all 0.3s;
+    position: relative;
+  }
+  .progress-dot.filled {
+    background: var(--accent);
+  }
+  .progress-dot.today {
+    background: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-light);
+  }
+
+  /* Cards */
+  .card {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 24px 20px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    transition: transform 0.2s;
+  }
+
+  /* Question */
+  .question-label {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--accent);
+    margin-bottom: 12px;
+    font-weight: 500;
+  }
+  .question-text {
+    font-size: 17px;
+    line-height: 1.6;
+    color: var(--text);
+    font-weight: 400;
+  }
+  .question-hint {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-top: 12px;
+    font-style: italic;
+  }
+
+  /* Textarea */
+  .answer-area {
+    margin-top: 12px;
+  }
+  .answer-area textarea {
+    width: 100%;
+    min-height: 100px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px;
+    font-size: 15px;
+    font-family: inherit;
+    line-height: 1.6;
+    color: var(--text);
+    background: var(--bg);
+    resize: vertical;
+    transition: border-color 0.2s;
+  }
+  .answer-area textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+    background: var(--card);
+  }
+  .answer-area textarea::placeholder {
+    color: var(--text-muted);
+  }
+
+  /* Buttons */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+    width: 100%;
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: #fff;
+  }
+  .btn-primary:active {
+    background: #a07d55;
+  }
+  .btn-primary:disabled {
+    background: var(--border);
+    color: var(--text-muted);
+    cursor: not-allowed;
+  }
+  .btn-secondary {
+    background: transparent;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+  }
+
+  /* AI mirror */
+  .mirror-card {
+    border-left: 3px solid var(--accent);
+    background: #fdfaf5;
+  }
+  .mirror-label {
+    font-size: 12px;
+    color: var(--accent);
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+  .mirror-text {
+    font-size: 15px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+  .typing-indicator {
+    display: inline-flex;
+    gap: 4px;
+    padding: 8px 0;
+  }
+  .typing-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent-light);
+    animation: bounce 1.4s infinite ease-in-out;
+  }
+  .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+  .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes bounce {
+    0%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-6px); }
+  }
+
+  /* Manifestation List */
+  .manifest-section {
+    margin-top: 12px;
+  }
+  .manifest-group {
+    margin-bottom: 20px;
+  }
+  .manifest-group-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--accent);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .manifest-item {
+    padding: 8px 0 8px 16px;
+    border-left: 2px solid var(--border);
+    margin-bottom: 6px;
+    font-size: 14px;
+    color: var(--text-secondary);
+    transition: border-color 0.2s;
+  }
+  .manifest-item:last-child { margin-bottom: 0; }
+
+  /* History */
+  .history-item {
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .history-item:last-child { border-bottom: none; }
+  .history-day {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+  }
+  .history-q {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+  }
+  .history-a {
+    font-size: 14px;
+    color: var(--text);
+    padding-left: 12px;
+    border-left: 2px solid var(--accent-light);
+  }
+
+  /* Locked state */
+  .locked {
+    opacity: 0.5;
+    pointer-events: none;
+    filter: grayscale(0.3);
+  }
+  .lock-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 8px;
+  }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--text);
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-size: 13px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+    z-index: 100;
+  }
+  .toast.show { opacity: 1; }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 32px 0;
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  /* Tabs */
+  .tabs {
+    display: flex;
+    gap: 0;
+    margin-bottom: 16px;
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 4px;
+    border: 1px solid var(--border);
+  }
+  .tab {
+    flex: 1;
+    padding: 8px;
+    text-align: center;
+    font-size: 14px;
+    color: var(--text-muted);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-weight: 400;
+  }
+  .tab.active {
+    background: var(--accent-light);
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <h1>显化清单</h1>
+    <div class="subtitle">先看看你已经收到了什么</div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs" id="tabBar">
+    <div class="tab active" data-tab="today">今天的问题</div>
+    <div class="tab" data-tab="history">回顾</div>
+    <div class="tab" data-tab="manifest">显化清单</div>
+  </div>
+
+  <!-- Today Tab -->
+  <div id="todayTab">
+    <!-- Day indicator -->
+    <div style="text-align:center">
+      <div class="day-badge">
+        <span class="dot"></span>
+        第 <span id="currentDay">1</span> 天
+      </div>
+    </div>
+
+    <!-- Progress dots -->
+    <div class="progress-dots" id="progressDots"></div>
+
+    <!-- Question card -->
+    <div class="card" id="questionCard">
+      <div class="question-label">今天的问题</div>
+      <div class="question-text" id="questionText"></div>
+      <div class="question-hint" id="questionHint"></div>
+      
+      <div class="answer-area" id="answerArea">
+        <textarea id="answerInput" placeholder="写下你真实的想法，不用想太多…" rows="3"></textarea>
+        <div style="margin-top:12px">
+          <button class="btn btn-primary" id="submitBtn" onclick="submitAnswer()">记录</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Already answered today -->
+    <div class="card hidden" id="doneCard">
+      <div style="text-align:center;color:var(--success);font-size:15px;padding:12px 0;">
+        ✓ 今天的回答已记录
+      </div>
+      <div style="text-align:center;margin-top:8px">
+        <button class="btn btn-secondary" onclick="switchTab('history')" style="width:auto;padding:8px 20px;font-size:13px;">查看回顾</button>
+      </div>
+    </div>
+
+    <!-- Mirror follow-up -->
+    <div class="card mirror-card hidden" id="mirrorCard">
+      <div class="mirror-label">🪞 追问</div>
+      <div class="mirror-text" id="mirrorText"></div>
+      <div class="answer-area" style="margin-top:12px">
+        <textarea id="mirrorInput" placeholder="…" rows="2"></textarea>
+        <div style="margin-top:12px">
+          <button class="btn btn-primary" id="mirrorSubmitBtn" onclick="submitMirror()">回应</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mirror answered -->
+    <div class="card hidden" id="mirrorDoneCard">
+      <div style="text-align:center;color:var(--success);font-size:14px;padding:8px 0;">
+        ✓ 已回应
+      </div>
+    </div>
+  </div>
+
+  <!-- History Tab -->
+  <div id="historyTab" class="hidden">
+    <div class="card" id="historyContent">
+      <div style="text-align:center;color:var(--text-muted);padding:20px;" id="historyEmpty">
+        还没有回答记录。回到「今天的问题」开始吧。
+      </div>
+    </div>
+  </div>
+
+  <!-- Manifest Tab -->
+  <div id="manifestTab" class="hidden">
+    <div class="card" id="manifestContent">
+      <div style="text-align:center;color:var(--text-muted);padding:20px;" id="manifestLocked">
+        <div style="font-size:40px;margin-bottom:12px;">🔒</div>
+        <div>需要记录 <strong>7</strong> 天才能解锁显化清单</div>
+        <div class="lock-badge" style="justify-content:center;margin-top:12px;">
+          目前已记录 <span id="manifestProgressDays">0</span> / 7 天
+        </div>
+      </div>
+      <div id="manifestUnlocked" class="hidden">
+        <div style="font-size:15px;font-weight:500;margin-bottom:16px;color:var(--text);">
+          你已经收到的——
+        </div>
+        <div id="manifestList"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">不教你怎么吸引 · 帮你看见已有的</div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── Questions ──────────────────────────────────────────
+const questions = [
+  {
+    q: "你现在住的这个房间里，有哪件东西是你一年前还没有的？它出现在你的生活里，是因为你做对了什么？",
+    hint: "不用很大，可以是一本书、一盏灯、一个习惯。"
+  },
+  {
+    q: "如果五年前的你看到现在的你，他会因为什么而羡慕？说具体。",
+    hint: "不是「更有钱」「更成熟」这种笼统的——说一件具体的事。"
+  },
+  {
+    q: "你最近有没有遇到过这样的情况：本来担心的事没发生，但它没发生的真正原因是什么——是你做了什么，还是世界本来就没那么危险？",
+    hint: "把担心的那件事写下来，然后看它为什么没发生。"
+  },
+  {
+    q: "今天有没有哪一刻，你完全没在想「下一步该做什么」？那一刻你在干什么？",
+    hint: "哪怕只有五分钟也算。"
+  },
+  {
+    q: "你认识的人里，有谁的生活方式是你曾经向往过、现在其实已经接近了的？",
+    hint: "不是比较，是看见——你已经在某个维度上靠近了。"
+  },
+  {
+    q: "最近一次你被别人帮助是什么时候？那个帮助是你主动开口要的，还是对方自己递过来的？",
+    hint: "如果是后者——说明你在别人的视野里，不是一个人。"
+  },
+  {
+    q: "你最近有没有为了自己而不是为了别人做的一件事？哪怕很小。",
+    hint: "不是为了让人满意，纯粹因为你想。"
+  },
+  {
+    q: "你过去三个月里，有没有哪件事是你一开始觉得「我不行」，但后来做到了的？",
+    hint: "不用多大，完成就算。"
+  },
+  {
+    q: "有没有某个技能或认知，是你现在觉得理所当然、但几年前还完全没有的？",
+    hint: "这种「理所当然感」本身就是证据——你已经不再是以前的你了。"
+  },
+  {
+    q: "你现在手机里最常用的三个 app 是什么？它们分别满足了你的什么需求——而「能满足这些需求」这件事本身，说明了什么？",
+    hint: "不是评价 app，是看你的需求是否被接住了。"
+  },
+  {
+    q: "最近一次你感到「安全」是什么时候？那种安全感的来源是什么？",
+    hint: "是一个地方、一个人、一个习惯，还是你自己给自己的？"
+  },
+  {
+    q: "有没有什么东西是你曾经非常想要、现在已经有了、但你很久没想起它了的？",
+    hint: "它可能就在你手边。"
+  },
+  {
+    q: "你今天在什么事情上做了选择（而不是被安排）？哪怕是很小的选择。",
+    hint: "选择本身就是一种拥有——你有选择的空间。"
+  },
+  {
+    q: "最近一次你和别人聊天，对方让你觉得「被理解了」是什么时候？他说了什么或做了什么？",
+    hint: "把那个瞬间还原出来。"
+  }
+];
+
+// ── State ──────────────────────────────────────────────
+const STORAGE_KEY = 'manifest_app_state';
+const TODAY_KEY_PREFIX = 'manifest_day_';
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : { startDate: null, days: {} };
+  } catch { return { startDate: null, days: {} }; }
+}
+
+function saveState(state) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+}
+
+function getTodayKey() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+
+function getDayIndex(state) {
+  if (!state.startDate) return 1;
+  const start = new Date(state.startDate);
+  const today = new Date(getTodayKey());
+  const diff = Math.floor((today - start) / (1000*60*60*24));
+  return Math.max(1, Math.min(diff + 1, questions.length));
+}
+
+// ── Init ───────────────────────────────────────────────
+let state = loadState();
+if (!state.startDate) {
+  state.startDate = getTodayKey();
+  saveState(state);
+}
+
+const dayIndex = getDayIndex(state);
+const todayKey = getTodayKey();
+const todayData = state.days[todayKey] || { answered: false, mirrorAnswered: false };
+
+// ── Render ─────────────────────────────────────────────
+function renderProgress() {
+  const container = document.getElementById('progressDots');
+  container.innerHTML = '';
+  for (let i = 1; i <= 7; i++) {
+    const dot = document.createElement('div');
+    dot.className = 'progress-dot';
+    if (i < dayIndex) dot.classList.add('filled');
+    if (i === dayIndex) dot.classList.add('today');
+    container.appendChild(dot);
+  }
+}
+
+function renderToday() {
+  document.getElementById('currentDay').textContent = dayIndex;
+  renderProgress();
+
+  const q = questions[(dayIndex - 1) % questions.length];
+  document.getElementById('questionText').textContent = q.q;
+  document.getElementById('questionHint').textContent = q.hint || '';
+
+  if (todayData.answered) {
+    document.getElementById('answerArea').classList.add('hidden');
+    document.getElementById('doneCard').classList.remove('hidden');
+    document.getElementById('questionCard').querySelector('.question-label').textContent = '今天的问题 ✓';
+    
+    if (todayData.mirrorAnswer) {
+      document.getElementById('mirrorCard').classList.add('hidden');
+      document.getElementById('mirrorDoneCard').classList.remove('hidden');
+    } else if (todayData.mirrorQuestion) {
+      document.getElementById('mirrorCard').classList.remove('hidden');
+      document.getElementById('mirrorText').textContent = todayData.mirrorQuestion;
+    }
+  } else {
+    document.getElementById('answerArea').classList.remove('hidden');
+    document.getElementById('doneCard').classList.add('hidden');
+    document.getElementById('mirrorCard').classList.add('hidden');
+    document.getElementById('mirrorDoneCard').classList.add('hidden');
+  }
+}
+
+function renderHistory() {
+  const container = document.getElementById('historyContent');
+  const empty = document.getElementById('historyEmpty');
+  
+  const entries = Object.entries(state.days)
+    .filter(([_, d]) => d.answered)
+    .sort((a, b) => b[0].localeCompare(a[0]));
+
+  // Remove old history items (keep empty placeholder)
+  container.querySelectorAll('.history-item').forEach(el => el.remove());
+
+  if (entries.length === 0) {
+    empty.classList.remove('hidden');
+    return;
+  }
+  empty.classList.add('hidden');
+
+  entries.forEach(([dateKey, data]) => {
+    const div = document.createElement('div');
+    div.className = 'history-item';
+    const dayNum = getDayNumForDate(dateKey);
+    div.innerHTML = `
+      <div class="history-day">第 ${dayNum} 天 · ${dateKey}</div>
+      <div class="history-q">${data.question || '—'}</div>
+      <div class="history-a">${escapeHtml(data.answer || '')}</div>
+      ${data.mirrorQuestion ? `<div style="margin-top:8px;font-size:13px;color:var(--accent);">🪞 ${escapeHtml(data.mirrorQuestion)}</div>` : ''}
+      ${data.mirrorAnswer ? `<div class="history-a" style="margin-top:4px">${escapeHtml(data.mirrorAnswer)}</div>` : ''}
+    `;
+    container.appendChild(div);
+  });
+}
+
+function getDayNumForDate(dateKey) {
+  if (!state.startDate) return '?';
+  const start = new Date(state.startDate);
+  const d = new Date(dateKey);
+  const diff = Math.floor((d - start) / (1000*60*60*24));
+  return diff + 1;
+}
+
+function renderManifest() {
+  const locked = document.getElementById('manifestLocked');
+  const unlocked = document.getElementById('manifestUnlocked');
+  const list = document.getElementById('manifestList');
+  
+  const answeredDays = Object.values(state.days).filter(d => d.answered).length;
+  document.getElementById('manifestProgressDays').textContent = answeredDays;
+
+  if (answeredDays < 7) {
+    locked.classList.remove('hidden');
+    unlocked.classList.add('hidden');
+    return;
+  }
+
+  locked.classList.add('hidden');
+  unlocked.classList.remove('hidden');
+
+  // Generate manifestation list from answers
+  const allAnswers = Object.entries(state.days)
+    .filter(([_, d]) => d.answered)
+    .map(([date, d]) => ({ date, ...d }));
+
+  const categories = {
+    '你做到过但你忘了的事': [],
+    '你曾经担心但没发生的事': [],
+    '你现在拥有、过去只在「希望」阶段的事': [],
+    '你低估了的资源和连接': []
+  };
+
+  // Simple categorization based on keywords in answers and questions
+  allAnswers.forEach(entry => {
+    const combined = (entry.answer + ' ' + (entry.mirrorAnswer || '')).toLowerCase();
+    const q = (entry.question || '').toLowerCase();
+    
+    if (q.includes('担心') || q.includes('不行') || combined.includes('担心') || combined.includes('害怕')) {
+      categories['你曾经担心但没发生的事'].push(entry);
+    } else if (q.includes('向往') || q.includes('想要') || q.includes('希望') || combined.includes('曾经') || combined.includes('以前')) {
+      categories['你现在拥有、过去只在「希望」阶段的事'].push(entry);
+    } else if (q.includes('帮助') || q.includes('聊天') || q.includes('理解') || combined.includes('朋友') || combined.includes('家人') || combined.includes('同事')) {
+      categories['你低估了的资源和连接'].push(entry);
+    } else {
+      categories['你做到过但你忘了的事'].push(entry);
+    }
+  });
+
+  // Remove empty categories
+  Object.keys(categories).forEach(key => {
+    if (categories[key].length === 0) delete categories[key];
+  });
+
+  if (Object.keys(categories).length === 0) {
+    list.innerHTML = '<div style="color:var(--text-muted);text-align:center;padding:20px;">继续记录，让清单慢慢浮现。</div>';
+    return;
+  }
+
+  list.innerHTML = Object.entries(categories).map(([title, items]) => `
+    <div class="manifest-group">
+      <div class="manifest-group-title">
+        <span>✦</span> ${title}
+      </div>
+      ${items.map(item => `
+        <div class="manifest-item">
+          「${escapeHtml(item.question || '')}」<br>
+          <span style="color:var(--text);">${extractKeyInsight(item)}</span>
+        </div>
+      `).join('')}
+    </div>
+  `).join('');
+}
+
+function extractKeyInsight(entry) {
+  const answer = entry.answer || '';
+  // Extract first meaningful sentence
+  const sentences = answer.split(/[。！？\n]/).filter(s => s.trim().length > 5);
+  if (sentences.length > 0) {
+    return sentences[0].trim().substring(0, 60) + (sentences[0].trim().length > 60 ? '…' : '');
+  }
+  return answer.substring(0, 60);
+}
+
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+// ── Tab switching ──────────────────────────────────────
+function switchTab(tab) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelector(`[data-tab="${tab}"]`).classList.add('active');
+  
+  document.getElementById('todayTab').classList.toggle('hidden', tab !== 'today');
+  document.getElementById('historyTab').classList.toggle('hidden', tab !== 'history');
+  document.getElementById('manifestTab').classList.toggle('hidden', tab !== 'manifest');
+  
+  if (tab === 'history') renderHistory();
+  if (tab === 'manifest') renderManifest();
+}
+
+document.getElementById('tabBar').addEventListener('click', e => {
+  const tab = e.target.closest('.tab');
+  if (tab) switchTab(tab.dataset.tab);
+});
+
+// ── AI Mirror ──────────────────────────────────────────
+function generateMirrorQuestion(answer) {
+  const a = answer.trim();
+  
+  // Pattern 1: "没那么X了" / "更X了" — ask about the turning point
+  if (/没那么|不再|比以前|更.*了|发生了变化|变了/.test(a)) {
+    return '具体是从什么时候开始变的？那个转折点前后，你做了什么不一样的事？';
+  }
+  
+  // Pattern 2: "我以为" / "本来以为" — challenge assumption, ask what really happened
+  if (/我以为|本来以为|原以为|以为会/.test(a)) {
+    return '那实际发生了什么，和你以为的有什么不同？这个差距告诉你什么？';
+  }
+  
+  // Pattern 3: Mentions a person — ask about what they reflect
+  if (/朋友|家人|同事|伴侣|老板|老师|同学|妈妈|爸爸/.test(a)) {
+    return '这个人出现在你的生活里，你觉得是你主动建立的关系，还是某种意义上的「刚好」？';
+  }
+  
+  // Pattern 4: "做到了" / "完成了" / "做对了" — ask what enabled it
+  if (/做到|完成|做对|成功|终于|搞定|学会/.test(a)) {
+    return '如果把这个能力拆开——你觉得里面有多少是自己的努力，多少是外部条件刚好成熟了？';
+  }
+  
+  // Pattern 5: Mentions time (最近 / 以前 / 过去)
+  if (/最近|以前|过去|曾经|小时候|几年前|上个月|上周/.test(a)) {
+    return '拿现在的你和那个时间点的你比——如果当时的你知道今天会变成这样，他会觉得意外吗？';
+  }
+  
+  // Pattern 6: Mentions a specific object or place
+  if (/房间|家里|办公室|桌子|电脑|手机|书|灯|椅子|杯子|床/.test(a)) {
+    return '这个东西在你的生活里扮演了什么角色——它是工具、陪伴、还是某种象征？';
+  }
+  
+  // Pattern 7: "够了" / "满足" / "满意" — explore what "enough" means to them
+  if (/够了|满足|满意|知足|挺好的|还不错/.test(a)) {
+    return '你说的「够了」——是妥协之后的接受，还是真的觉得不需要更多了？';
+  }
+  
+  // Default: ask for specificity
+  const patterns = [
+    '能不能再具体一点？比如某一天、某一个瞬间。',
+    '如果让你用一个画面来描述你说的这件事，那个画面里有什么？',
+    '这件事对你来说最珍贵的部分是什么——是结果，还是过程中的某个东西？',
+  ];
+  return patterns[Math.floor(Math.random() * patterns.length)];
+}
+
+// ── Actions ────────────────────────────────────────────
+function submitAnswer() {
+  const input = document.getElementById('answerInput');
+  const answer = input.value.trim();
+  if (!answer) return;
+  
+  state.days[todayKey] = {
+    ...state.days[todayKey],
+    answered: true,
+    answer: answer,
+    question: questions[(dayIndex - 1) % questions.length].q
+  };
+  saveState(state);
+  
+  // Show done
+  document.getElementById('answerArea').classList.add('hidden');
+  document.getElementById('doneCard').classList.remove('hidden');
+  document.getElementById('questionCard').querySelector('.question-label').textContent = '今天的问题 ✓';
+  
+  // Generate mirror question after a brief delay
+  setTimeout(() => {
+    const mirrorQ = generateMirrorQuestion(answer);
+    state.days[todayKey].mirrorQuestion = mirrorQ;
+    saveState(state);
+    todayData.mirrorQuestion = mirrorQ;
+    document.getElementById('mirrorText').textContent = mirrorQ;
+    document.getElementById('mirrorCard').classList.remove('hidden');
+    document.getElementById('mirrorInput').value = '';
+    document.getElementById('mirrorInput').focus();
+  }, 800);
+  
+  showToast('已记录 ✨');
+}
+
+function submitMirror() {
+  const input = document.getElementById('mirrorInput');
+  const answer = input.value.trim();
+  if (!answer) return;
+  
+  state.days[todayKey].mirrorAnswer = answer;
+  saveState(state);
+  
+  document.getElementById('mirrorCard').classList.add('hidden');
+  document.getElementById('mirrorDoneCard').classList.remove('hidden');
+  
+  showToast('已回应 🪞');
+}
+
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2000);
+}
+
+// ── Init ───────────────────────────────────────────────
+renderToday();
+</script>
+</body>
+</html>
