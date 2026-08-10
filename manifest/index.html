@@ -1518,6 +1518,11 @@ window.abundanceApp = (function() {
           '<div class="sc-footer">测测你的丰盈指数</div>' +
         '</div>' +
         '<button class="ab-btn ab-btn-outline" onclick="window.abundanceApp.shareResult()" style="width:auto;padding:10px 24px;font-size:14px;">\uD83D\uDCCB 复制分享文案</button>' +
+        '<button class="ab-btn ab-btn-outline" onclick="window.abundanceApp.generateShareImage()" style="width:auto;padding:10px 24px;font-size:14px;margin-top:8px;">\uD83D\uDCF8 生成分享图</button>' +
+        '<div id="shareImageWrap" style="margin-top:16px;display:none;">' +
+          '<img id="shareImageImg" style="width:100%;border-radius:12px;box-shadow:0 2px 16px rgba(0,0,0,0.1);" alt="分享图" />' +
+          '<div style="margin-top:10px;font-size:12px;color:var(--text3);">长按图片保存到相册</div>' +
+        '</div>' +
         '<button class="ab-btn ab-btn-outline" onclick="window.abundanceApp.restartQuiz()" style="width:auto;padding:10px 24px;font-size:14px;margin-top:8px;">\uD83D\uDD04 重新测试</button>' +
       '</div>';
 
@@ -1557,6 +1562,119 @@ window.abundanceApp = (function() {
     });
   }
 
+  function generateShareImage() {
+    var result = calcScores();
+    var dims = result.dimensions;
+    var bestDim = 1, bestScore = 0, blindDim = null;
+    [1,2,3].forEach(function(d) {
+      var avg = (dims[d].obj + dims[d].sub) / 2;
+      if (avg > bestScore) { bestScore = avg; bestDim = d; }
+      if (dims[d].type === 'blindspot' && !blindDim) blindDim = d;
+    });
+
+    var W = 750, H = 1200;
+    var c = document.createElement('canvas');
+    c.width = W; c.height = H;
+    var ctx = c.getContext('2d');
+
+    // Background
+    ctx.fillStyle = '#f6f4f0';
+    ctx.fillRect(0, 0, W, H);
+
+    // Top accent bar
+    ctx.fillStyle = '#5b7b5e';
+    ctx.fillRect(0, 0, W, 6);
+
+    // Title
+    ctx.fillStyle = '#5b7b5e';
+    ctx.font = 'bold 36px -apple-system,"PingFang SC",sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('丰盈体检', W/2, 80);
+
+    // Big number
+    ctx.fillStyle = '#5b7b5e';
+    ctx.font = 'bold 120px -apple-system,"PingFang SC",sans-serif';
+    ctx.fillText(result.index, W/2, 240);
+    ctx.fillStyle = '#5c5c5c';
+    ctx.font = '24px -apple-system,"PingFang SC",sans-serif';
+    ctx.fillText('丰盈指数', W/2, 280);
+
+    // Best dimension
+    var y = 340;
+    ctx.fillStyle = '#5b7b5e';
+    ctx.font = 'bold 22px -apple-system,"PingFang SC",sans-serif';
+    ctx.fillText('✦ 最强维度：' + getDimName(bestDim), W/2, y);
+
+    // Blind spot
+    y += 50;
+    if (blindDim) {
+      ctx.fillStyle = '#b8956a';
+      ctx.font = 'bold 22px -apple-system,"PingFang SC",sans-serif';
+      ctx.fillText('🪞 盲区：' + getDimName(blindDim), W/2, y);
+      y += 35;
+      ctx.fillStyle = '#5c5c5c';
+      ctx.font = '18px -apple-system,"PingFang SC",sans-serif';
+      ctx.fillText('你有但你没意识到', W/2, y);
+      y += 50;
+    } else {
+      y += 30;
+    }
+
+    // Separator
+    ctx.strokeStyle = '#e8e4dd';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(100, y); ctx.lineTo(W-100, y);
+    ctx.stroke();
+    y += 40;
+
+    // Dimension scores
+    var dimNames = ['物质与能力','关系与连接','经历与验证'];
+    var dimColors = ['#5b7b5e','#b8956a','#8b6f47'];
+    [1,2,3].forEach(function(d,i) {
+      ctx.fillStyle = dimColors[i];
+      ctx.font = 'bold 22px -apple-system,"PingFang SC",sans-serif';
+      ctx.fillText(dimNames[i], W/2, y);
+      y += 35;
+      ctx.fillStyle = '#5c5c5c';
+      ctx.font = '20px -apple-system,"PingFang SC",sans-serif';
+      ctx.fillText('客观 ' + dims[d].obj + ' · 主观 ' + dims[d].sub, W/2, y);
+      // Bar
+      var bx = 150, bw = W - 300, bh = 12;
+      y += 24;
+      ctx.fillStyle = '#e8e4dd';
+      ctx.fillRect(bx, y, bw, bh);
+      ctx.fillStyle = dimColors[i];
+      ctx.fillRect(bx, y, bw * dims[d].obj / 100, bh);
+      ctx.fillStyle = dimColors[i];
+      ctx.globalAlpha = 0.5;
+      ctx.fillRect(bx, y, bw * dims[d].sub / 100, bh);
+      ctx.globalAlpha = 1;
+      y += 40;
+    });
+
+    // Footer with QR code
+    y = H - 220;
+    ctx.fillStyle = '#999';
+    ctx.font = '16px -apple-system,"PingFang SC",sans-serif';
+    ctx.fillText('扫码测测你的丰盈指数', W/2, y);
+
+    // Load QR code
+    var qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=' + encodeURIComponent(window.location.href);
+    var qrImg = new Image();
+    qrImg.crossOrigin = 'anonymous';
+    qrImg.onload = function() {
+      ctx.drawImage(qrImg, W/2 - 60, H - 180, 120, 120);
+      var dataUrl = c.toDataURL('image/png');
+      var wrap = document.getElementById('shareImageWrap');
+      var img = document.getElementById('shareImageImg');
+      img.src = dataUrl;
+      wrap.style.display = 'block';
+      wrap.scrollIntoView({behavior:'smooth'});
+    };
+    qrImg.src = qrUrl;
+  }
+
   function restartQuiz() {
     answers = [];
     currentQ = 0;
@@ -1576,6 +1694,7 @@ window.abundanceApp = (function() {
     continueSection: continueSection,
     selectAnswer: selectAnswer,
     shareResult: shareResult,
+    generateShareImage: generateShareImage,
     restartQuiz: restartQuiz
   };
 })();
