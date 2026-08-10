@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
@@ -1042,13 +1042,17 @@ window.manifestApp = (function() {
     todayKey = getTodayKey();
     todayData = state.days[todayKey] || { answered: false, mirrorAnswered: false };
     renderToday();
+    bindTabBar();
   }
 
   // ── Tab bar event ────────────────────────────────────
-  document.getElementById('manifestTabBar').addEventListener('click', function(e) {
-    var tab = e.target.closest('.tab');
-    if (tab) switchTab(tab.dataset.tab);
-  });
+  function bindTabBar() {
+    var bar = document.getElementById('manifestTabBar');
+    if (bar) bar.addEventListener('click', function(e) {
+      var tab = e.target.closest('.tab');
+      if (tab) switchTab(tab.dataset.tab);
+    });
+  }
 
   // ── Public API ───────────────────────────────────────
   return {
@@ -1543,20 +1547,23 @@ function showLanding() {
 }
 
 function showManifest() {
-  document.getElementById('landingPage').classList.add('hidden');
-  document.getElementById('manifestApp').classList.remove('hidden');
-  document.getElementById('abundanceApp').classList.add('hidden');
-  window.scrollTo(0, 0);
-  // Re-init every time to reflect latest localStorage
-  window.manifestApp.init();
+  try {
+    document.getElementById('landingPage').classList.add('hidden');
+    document.getElementById('manifestApp').classList.remove('hidden');
+    document.getElementById('abundanceApp').classList.add('hidden');
+    window.scrollTo(0, 0);
+    if (window.manifestApp && window.manifestApp.init) window.manifestApp.init();
+  } catch(e) { console.error('showManifest error:', e); }
 }
 
 function showAbundance() {
-  document.getElementById('landingPage').classList.add('hidden');
-  document.getElementById('manifestApp').classList.add('hidden');
-  document.getElementById('abundanceApp').classList.remove('hidden');
-  window.scrollTo(0, 0);
-  window.abundanceApp.init();
+  try {
+    document.getElementById('landingPage').classList.add('hidden');
+    document.getElementById('manifestApp').classList.add('hidden');
+    document.getElementById('abundanceApp').classList.remove('hidden');
+    window.scrollTo(0, 0);
+    if (window.abundanceApp && window.abundanceApp.init) window.abundanceApp.init();
+  } catch(e) { console.error('showAbundance error:', e); }
 }
 </script>
 </body>
